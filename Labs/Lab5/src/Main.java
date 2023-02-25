@@ -17,9 +17,13 @@ public class Main {
 //
 //        PropertyAssessment propertyAssessment = apiPropertyAssessmentDAO.getByAccountNumber(Integer.parseInt(input));
 
-        input = getUserInput("neighbourhood:");
+//        input = getUserInput("neighbourhood:");
+//
+//        List<PropertyAssessment> neighbourhoodPropertyAssessments = apiPropertyAssessmentDAO.getByNeighbourhood(input);
 
-        List<PropertyAssessment> neighbourhoodPropertyAssessments = apiPropertyAssessmentDAO.getByNeighbourhood(input);
+        input = getUserInput("Assessment Class:");
+
+        List<PropertyAssessment> assessmentClasspropertyAssessmentList = apiPropertyAssessmentDAO.getByAssessmentClass(input);
     }
 
     /**

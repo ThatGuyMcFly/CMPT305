@@ -63,6 +63,21 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getByAssessmentClass(String assessmentClass) {
-        return null;
+        List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
+        String assessmentClassUpperCase = assessmentClass.toUpperCase();
+
+        for (int i = 1; i <= 3; i++) {
+            String queryAddition = "?mill_class_" + i + "=" + assessmentClassUpperCase;
+
+            String response = getData(queryAddition);
+
+            String[] propertyAssessments = response.replaceAll("\"", "").split("\n");
+
+            for (int j = 1; j < propertyAssessments.length; j++) {
+                assessmentClassPropertyAssessments.add(new PropertyAssessment(propertyAssessments[j].split(",")));
+            }
+        }
+
+        return assessmentClassPropertyAssessments;
     }
 }
