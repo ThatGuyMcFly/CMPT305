@@ -1,3 +1,5 @@
+package com.lab6.propertyassessmentapplication;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
