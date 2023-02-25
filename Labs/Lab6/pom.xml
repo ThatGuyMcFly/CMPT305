@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                com.lab6.propertyassessmentapplication/com.lab6.propertyassessmentapplication.HelloApplication
+                                com.lab6.propertyassessmentapplication/com.lab6.propertyassessmentapplication.PropertyAssessmentApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class Location {
 
-    private final String latitude;
+    private final double latitude;
 
-    private final String longitude;
+    private final double longitude;
 
     /**
      * Constructor for the Location Class
@@ -14,15 +14,15 @@ public class Location {
      * @param longitude - the location longitude
      */
     public Location (String latitude, String longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.latitude = Double.parseDouble(latitude);
+        this.longitude = Double.parseDouble(longitude);
     }
 
     /**
      * Getter for the location's latitude
      * @return the location's latitude
      */
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -30,7 +30,7 @@ public class Location {
      * Getter for the location's longitude
      * @return the location's longitude
      */
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

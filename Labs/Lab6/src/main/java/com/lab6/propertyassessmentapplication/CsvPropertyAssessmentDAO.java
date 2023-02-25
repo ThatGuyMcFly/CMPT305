@@ -4,9 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
@@ -204,6 +202,7 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with a specified assessment class
+     *
      * @param assessmentClass the specified assessment class
      * @return a Property Assessments object with all the property assessments with a specified assessment class
      */
@@ -212,8 +211,8 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
         List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
 
         for(PropertyAssessment propertyAssessment: propertyAssessments) {
-            for(String propertyAssessmentClass: propertyAssessment.getAssessmentClass().getAssessmentClasses()){
-                if(propertyAssessmentClass.equalsIgnoreCase(assessmentClass)){
+            for(AssessmentClass propertyAssessmentClass: propertyAssessment.getAssessmentClassList()){
+                if(propertyAssessmentClass.getAssessmentClassName().equalsIgnoreCase(assessmentClass)){
                     assessmentClassPropertyAssessments.add(propertyAssessment);
                 }
             }

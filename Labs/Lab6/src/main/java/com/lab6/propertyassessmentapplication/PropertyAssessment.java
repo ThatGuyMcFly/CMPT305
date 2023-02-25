@@ -22,11 +22,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     private final Location location;
 
-    private AssessmentClass assessmentClass;
-
-//    private List<Integer> assessmentClassPercentages;
-//
-//    private List<String> assessmentClasses;
+    private final List<AssessmentClass> assessmentClassList;
 
     /**
      * Constructor for the Property Assessment Class
@@ -44,7 +40,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
         this.ward = propertyData[7];
         this.assessedValue = Integer.parseInt(propertyData[8]);
         this.location = new Location(propertyData[9], propertyData[10]);
-        this.assessmentClass = this.createAssessmentClasses(propertyData);
+        this.assessmentClassList = this.createAssessmentClasses(propertyData);
     }
 
     /**
@@ -54,32 +50,25 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
      * { Account Number, Suite, House Number, Street name, Garage, Neighbourhood ID, Neighbourhood, Ward, Assessed Value, Latitude, Longitude, Point Location, Assessment Class % 1, Assessment Class % 2, Assessment Class % 3, Assessment Class 1, Assessment Class 2, Assessment Class 3 }
      *
      */
-    private AssessmentClass createAssessmentClasses(String[] propertyData) {
-        List<Integer> assessmentClassPercentages = new ArrayList<>();
-        List<String> assessmentClasses = new ArrayList<>();
+    private List<AssessmentClass> createAssessmentClasses(String[] propertyData) {
+        List<AssessmentClass> assessmentClassList = new ArrayList<>();
 
         for(int i = 12; i < 15; i++) {
             String value = propertyData[i];
             if(!value.equals("")) {
-                assessmentClassPercentages.add(Integer.parseInt(value));
+                int assessmentClassPercentage = Integer.parseInt(propertyData[i]);
+                String assessmentClassName = propertyData[i + 3];
+
+                assessmentClassList.add(new AssessmentClass(assessmentClassName, assessmentClassPercentage));
             } else {
                 break;
             }
         }
 
-        for(int i = 15; i < propertyData.length; i++) {
-            String value = propertyData[i];
-            if(!value.equals("")) {
-                assessmentClasses.add(value);
-            } else {
-                break;
-            }
-        }
-
-        return new AssessmentClass(assessmentClasses, assessmentClassPercentages);
+        return assessmentClassList;
     }
 
-    public AssessmentClass getAssessmentClass() { return assessmentClass; }
+    public List<AssessmentClass> getAssessmentClassList() { return assessmentClassList; }
 
     /**
      * Private function for determining if the property has a garage
@@ -87,7 +76,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
      * @return boolean of whether the property has a garage
      */
     private boolean extractHasGarage(String hasGarage) {
-        return !hasGarage.toLowerCase().equals("n");
+        return !hasGarage.equalsIgnoreCase("n");
     }
 
     /**
@@ -127,7 +116,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
      * @return the property's neighbourhood
      */
     public String getNeighbourhood() {
-        return neighbourhood;
+        return neighbourhood + " (" + getWard() + ")";
     }
 
     /**
@@ -170,12 +159,12 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PropertyAssessment that = (PropertyAssessment) o;
-        return accountNumber == that.accountNumber && garage == that.garage && assessedValue == that.assessedValue && Objects.equals(address, that.address) && Objects.equals(neighbourhoodId, that.neighbourhoodId) && Objects.equals(neighbourhood, that.neighbourhood) && Objects.equals(ward, that.ward) && Objects.equals(location, that.location) && Objects.equals(assessmentClass, that.assessmentClass);
+        return accountNumber == that.accountNumber && garage == that.garage && assessedValue == that.assessedValue && Objects.equals(address, that.address) && Objects.equals(neighbourhoodId, that.neighbourhoodId) && Objects.equals(neighbourhood, that.neighbourhood) && Objects.equals(ward, that.ward) && Objects.equals(location, that.location) && Objects.equals(assessmentClassList, that.assessmentClassList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountNumber, address, garage, neighbourhoodId, neighbourhood, ward, assessedValue, location, assessmentClass);
+        return Objects.hash(accountNumber, address, garage, neighbourhoodId, neighbourhood, ward, assessedValue, location, assessmentClassList);
     }
 
     @Override
@@ -189,7 +178,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
                 ", ward='" + ward + '\'' +
                 ", assessedValue=" + assessedValue +
                 ", location=" + location +
-                ", assessmentClass=" + assessmentClass +
+                ", assessmentClass=" + assessmentClassList +
                 '}';
     }
 }

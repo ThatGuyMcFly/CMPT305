@@ -1,24 +1,42 @@
 package com.lab6.propertyassessmentapplication;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 public class AssessmentClass {
 
-    List<String> assessmentClasses = new ArrayList<>();
-    List<Integer> assessmentClassPercentages = new ArrayList<>();
-    public AssessmentClass(List<String> assessmentClasses, List<Integer> assessmentClassPercentages){
-        this.assessmentClasses = assessmentClasses;
-        this.assessmentClassPercentages = assessmentClassPercentages;
+    private final String assessmentClassName;
+    private final int assessmentClassPercentage;
+    public AssessmentClass(String assessmentClassName, int assessmentClassPercentage){
+        this.assessmentClassName = assessmentClassName;
+        this.assessmentClassPercentage = assessmentClassPercentage;
     }
 
-    public List<String> getAssessmentClasses() {
-        return assessmentClasses;
+    public String getAssessmentClassName() {
+        return assessmentClassName;
     }
 
-    public List<Integer> getAssessmentClassPercentages() {
-        return assessmentClassPercentages;
+    public int getAssessmentClassPercentage() {
+        return assessmentClassPercentage;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AssessmentClass that = (AssessmentClass) o;
+        return assessmentClassPercentage == that.assessmentClassPercentage && Objects.equals(assessmentClassName, that.assessmentClassName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(assessmentClassName, assessmentClassPercentage);
+    }
+
+    @Override
+    public String toString() {
+        return "AssessmentClass{" +
+                "assessmentClass='" + assessmentClassName + '\'' +
+                ", assessmentClassPercentage=" + assessmentClassPercentage +
+                '}';
+    }
 }
