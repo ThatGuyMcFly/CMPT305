@@ -24,7 +24,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     String getData(String queryAddition) {
-        String url = endPoint + "?$where=" + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
+        String url = endPoint + "?" + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -54,33 +54,41 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return null;
     }
 
-    @Override
-    public List<PropertyAssessment> getByNeighbourhood(String neighbourhood) {
-        List<PropertyAssessment> neighbourhoodPropertyAssessments = new ArrayList<>();
+    private List<PropertyAssessment> processData(String data) {
+        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
 
-        String response = getData("neighbourhood = '" + neighbourhood.toUpperCase() + "'");
+        String[] propertyAssessmentStringArray = data.replaceAll("\"", "").split("\n");
 
-        String[] propertyAssessments = response.replaceAll("\"", "").split("\n");
-
-        for (int i = 1; i < propertyAssessments.length; i++) {
-            neighbourhoodPropertyAssessments.add(new PropertyAssessment(propertyAssessments[i].split(",")));
+        for (int i = 1; i < propertyAssessmentStringArray.length; i++) {
+            propertyAssessmentList.add(new PropertyAssessment(propertyAssessmentStringArray[i].split(",")));
         }
 
-        return neighbourhoodPropertyAssessments;
+        return propertyAssessmentList;
+    }
+
+    @Override
+    public List<PropertyAssessment> getByNeighbourhood(String neighbourhood) {
+        String response = getData("neighbourhood = '" + neighbourhood.toUpperCase() + "'");
+
+        return processData(response);
     }
 
     @Override
     public List<PropertyAssessment> getByAssessmentClass(String assessmentClass) {
-        List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
+        String response = getData("$where=mill_class_1 = '" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "'");
 
-        String response = getData("mill_class_1 = '" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "'");
+        return processData(response);
+    }
 
-        String[] propertyAssessments = response.replaceAll("\"", "").split("\n");
+    @Override
+    public List<PropertyAssessment> getAssessments() {
+        return getAssessments(0);
+    }
 
-        for (int i = 1; i < propertyAssessments.length; i++) {
-            assessmentClassPropertyAssessments.add(new PropertyAssessment(propertyAssessments[i].split(",")));
-        }
+    @Override
+    public List<PropertyAssessment> getAssessments(int offset) {
+        String response = getData("$limit=1000&offset=" + offset);
 
-        return assessmentClassPropertyAssessments;
+        return processData(response);
     }
 }

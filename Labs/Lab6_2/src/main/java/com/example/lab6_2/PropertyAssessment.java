@@ -116,7 +116,11 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
      * @return the property's neighbourhood
      */
     public String getNeighbourhood() {
-        return neighbourhood + " (" + getWard() + ")";
+        if (!ward.isEmpty()){
+            return neighbourhood + " (" + ward + ")";
+        } else {
+            return neighbourhood;
+        }
     }
 
     /**
@@ -142,7 +146,6 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
     public Location getLocation() {
         return location;
     }
-
 
     /**
      * Override the compare method to compare the assessed value of 2 property assessments

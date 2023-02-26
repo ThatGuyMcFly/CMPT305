@@ -5,10 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -19,25 +21,55 @@ import java.util.List;
 public class PropertyAssessmentApplication extends Application {
 
     private TableView<PropertyAssessment> table;
-    @Override
-    public void start(Stage stage) throws IOException {
-        stage.setTitle("Property Assessments");
-        VBox vBox = new VBox(10);
-        //vBox.setPadding(new Insets(10, 10, 10, 10));
-        Scene scene = new Scene(vBox, 600, 500);
-        stage.setScene(scene);
 
-        stage.setMaximized(true);
+    ObservableList<PropertyAssessment> propertyAssessments;
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        primaryStage.setTitle("Property Assessments");
+        VBox vBox = new VBox(10);
+        vBox.setPadding(new Insets(10, 10, 10, 10));
+        Scene scene = new Scene(vBox, 600, 500);
+        primaryStage.setScene(scene);
+
+        primaryStage.setMaximized(true);
 
         configureTable();
 
-        vBox.getChildren().addAll(table);
-        stage.show();
+        HBox hBox = new HBox(10);
+
+        Button csvButton = new Button("CSV");
+        csvButton.setOnAction(event -> {
+            propertyAssessments.clear();
+
+            CsvPropertyAssessmentDAO csvPropertyAssessmentDAO = new CsvPropertyAssessmentDAO();
+            List<PropertyAssessment> propertyAssessmentList = csvPropertyAssessmentDAO.getAssessments();
+
+            propertyAssessments.addAll(propertyAssessmentList);
+//            for(PropertyAssessment propertyAssessment : propertyAssessmentList) {
+//                propertyAssessments.add(propertyAssessment);
+//            }
+        });
+
+        Button apiBUtton = new Button("API");
+        apiBUtton.setOnAction(event -> {
+            propertyAssessments.clear();
+
+            ApiPropertyAssessmentDAO apiPropertyAssessmentDAO = new ApiPropertyAssessmentDAO();
+            List<PropertyAssessment> propertyAssessmentList = apiPropertyAssessmentDAO.getAssessments();
+
+            propertyAssessments.addAll(propertyAssessmentList);
+        });
+
+        hBox.getChildren().addAll(csvButton, apiBUtton);
+
+        vBox.getChildren().addAll(table, hBox);
+        primaryStage.show();
     }
 
     private void configureTable() {
         table = new TableView<>();
-        ObservableList<PropertyAssessment> propertyAssessments = FXCollections.observableArrayList();
+        propertyAssessments = FXCollections.observableArrayList();
         table.setItems(propertyAssessments);
 
         TableColumn<PropertyAssessment, String> accountCol = new TableColumn<>("Account");
@@ -47,6 +79,33 @@ public class PropertyAssessmentApplication extends Application {
 
         TableColumn<PropertyAssessment, Address> addressCol = new TableColumn<>("Address");
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        addressCol.setCellFactory(tc -> new TableCell<>() {
+            @Override
+            protected void updateItem(Address address, boolean empty) {
+                super.updateItem(address, empty);
+
+                if (!empty){
+                    StringBuilder addressString = new StringBuilder();
+//                    String addressString = address.getSuite() + " " + address.getHouseNumber() + " " + address.getStreet();
+                    if(!address.getSuite().isEmpty()) {
+                        addressString.append(address.getSuite()).append(" ");
+                    }
+
+                    if(!address.getHouseNumber().isEmpty()) {
+                        addressString.append(address.getHouseNumber()).append(" ");
+                    }
+
+                    addressString.append(address.getStreet());
+
+                    setText(addressString.toString());
+                } else {
+                    setText("");
+                }
+
+            }
+        });
+
         addressCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
         table.getColumns().add(addressCol);
 
@@ -71,19 +130,23 @@ public class PropertyAssessmentApplication extends Application {
             @Override
             protected void updateItem(List<AssessmentClass> assessmentClassList, boolean empty) {
                 super.updateItem(assessmentClassList, empty);
-                StringBuilder assessmentClassString = new StringBuilder("[");
-                for (int i = 0; i < assessmentClassList.size(); i++) {
-                    if(i > 0) {
-                        assessmentClassString.append(" ");
+                if(!empty) {
+                    StringBuilder assessmentClassString = new StringBuilder("[");
+                    for (int i = 0; i < assessmentClassList.size(); i++) {
+                        if(i > 0) {
+                            assessmentClassString.append(" ");
+                        }
+
+                        assessmentClassString.append(assessmentClassList.get(i).getAssessmentClassName()).append(" ");
+                        assessmentClassString.append(assessmentClassList.get(i).getAssessmentClassPercentage());
                     }
 
-                    assessmentClassString.append(assessmentClassList.get(i).getAssessmentClassName());
-                    assessmentClassString.append(assessmentClassList.get(i).getAssessmentClassPercentage());
+                    assessmentClassString.append("]");
+
+                    setText(assessmentClassString.toString());
+                } else {
+                    setText("");
                 }
-
-                assessmentClassString.append("]");
-
-                setText(empty ? "" : assessmentClassString.toString());
             }
         });
         assessmentClassCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));

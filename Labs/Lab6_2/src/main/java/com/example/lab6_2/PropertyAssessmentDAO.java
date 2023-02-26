@@ -6,4 +6,6 @@ public interface PropertyAssessmentDAO {
     PropertyAssessment getByAccountNumber(int accountNumber);
     List<PropertyAssessment> getByNeighbourhood(String neighbourhood);
     List<PropertyAssessment> getByAssessmentClass(String assessmentClass);
+    List<PropertyAssessment> getAssessments();
+    List<PropertyAssessment> getAssessments(int offset);
 }

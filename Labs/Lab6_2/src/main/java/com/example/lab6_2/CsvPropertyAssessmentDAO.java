@@ -223,8 +223,19 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return assessmentClassPropertyAssessments;
     }
 
+    @Override
+    public List<PropertyAssessment> getAssessments() {
+        return getAssessments(0);
+    }
+
+    @Override
+    public List<PropertyAssessment> getAssessments(int offset) {
+        List<PropertyAssessment> propertyAssessmentSubList = propertyAssessments.subList(offset, offset+10);
+        return propertyAssessmentSubList;
+    }
+
     /**
-     * Indicates if the property assessments if empty
+     * Indicates if the property assessments is empty
      * @return a boolean whether the property assessments is empty
      */
     public boolean isEmpty(){
