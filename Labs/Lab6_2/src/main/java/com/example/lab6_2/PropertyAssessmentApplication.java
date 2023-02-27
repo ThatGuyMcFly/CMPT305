@@ -5,71 +5,91 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class PropertyAssessmentApplication extends Application {
 
-    private TableView<PropertyAssessment> table;
-
-    ObservableList<PropertyAssessment> propertyAssessments;
+    private HBox mainHBox;
+    private VBox tableVBox;
+    private VBox selectionVBox;
+    private ObservableList<PropertyAssessment> propertyAssessments;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage){
         primaryStage.setTitle("Property Assessments");
-        VBox vBox = new VBox(10);
-        vBox.setPadding(new Insets(10, 10, 10, 10));
-        Scene scene = new Scene(vBox, 600, 500);
+        mainHBox = new HBox(10);
+        mainHBox.setPadding(new Insets(10, 10, 10, 10));
+        Scene scene = new Scene(mainHBox, 1000, 1000);
         primaryStage.setScene(scene);
 
         primaryStage.setMaximized(true);
 
         configureTable();
 
-        HBox hBox = new HBox(10);
+        configureSourceSelect();
 
-        Button csvButton = new Button("CSV");
-        csvButton.setOnAction(event -> {
-            propertyAssessments.clear();
-
-            CsvPropertyAssessmentDAO csvPropertyAssessmentDAO = new CsvPropertyAssessmentDAO();
-            List<PropertyAssessment> propertyAssessmentList = csvPropertyAssessmentDAO.getAssessments();
-
-            propertyAssessments.addAll(propertyAssessmentList);
-//            for(PropertyAssessment propertyAssessment : propertyAssessmentList) {
-//                propertyAssessments.add(propertyAssessment);
-//            }
-        });
-
-        Button apiBUtton = new Button("API");
-        apiBUtton.setOnAction(event -> {
-            propertyAssessments.clear();
-
-            ApiPropertyAssessmentDAO apiPropertyAssessmentDAO = new ApiPropertyAssessmentDAO();
-            List<PropertyAssessment> propertyAssessmentList = apiPropertyAssessmentDAO.getAssessments();
-
-            propertyAssessments.addAll(propertyAssessmentList);
-        });
-
-        hBox.getChildren().addAll(csvButton, apiBUtton);
-
-        vBox.getChildren().addAll(table, hBox);
+        mainHBox.getChildren().addAll(selectionVBox, tableVBox);
         primaryStage.show();
     }
 
+    private void configureSourceSelect() {
+        selectionVBox = new VBox(10);
+
+        final Source CSV = Source.CSV;
+        final Source API = Source.API;
+
+        final ObservableList<String> dataSources = FXCollections.observableArrayList(
+                CSV.getSource(),
+                API.getSource()
+        );
+
+        ComboBox<String> sourceSelect = new ComboBox<>(dataSources);
+
+        sourceSelect.prefWidthProperty().bind(selectionVBox.widthProperty());
+
+        Button getDataButton = new Button("Read Data");
+
+        getDataButton.setOnAction(event -> {
+            propertyAssessments.clear();
+
+            String source = sourceSelect.getValue();
+            List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
+            if(source.equals(CSV.getSource())) {
+                CsvPropertyAssessmentDAO propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
+                propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+            } else if(source.equals(API.getSource())) {
+                ApiPropertyAssessmentDAO propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
+                propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+            }
+
+            if (propertyAssessmentList.size() > 0) {
+                propertyAssessments.addAll(propertyAssessmentList);
+            }
+        });
+
+        getDataButton.prefWidthProperty().bind(selectionVBox.widthProperty());
+
+        Label selectionBoxLabel = new Label("Select Data Source");
+
+        selectionVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
+        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.1));
+    }
+
     private void configureTable() {
-        table = new TableView<>();
+        tableVBox = new VBox(10);
         propertyAssessments = FXCollections.observableArrayList();
+
+        TableView<PropertyAssessment> table = new TableView<>();
         table.setItems(propertyAssessments);
 
         TableColumn<PropertyAssessment, String> accountCol = new TableColumn<>("Account");
@@ -87,7 +107,7 @@ public class PropertyAssessmentApplication extends Application {
 
                 if (!empty){
                     StringBuilder addressString = new StringBuilder();
-//                    String addressString = address.getSuite() + " " + address.getHouseNumber() + " " + address.getStreet();
+
                     if(!address.getSuite().isEmpty()) {
                         addressString.append(address.getSuite()).append(" ");
                     }
@@ -168,6 +188,14 @@ public class PropertyAssessmentApplication extends Application {
         });
         locationCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
         table.getColumns().add(locationCol);
+
+        Label tableLabel = new Label("Edmonton Property Assessments (2022)");
+
+        table.prefWidthProperty().bind(tableVBox.widthProperty());
+        table.prefHeightProperty().bind(tableVBox.heightProperty());
+
+        tableVBox.getChildren().addAll(tableLabel, table);
+        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.9));
     }
 
     public static void main(String[] args) {

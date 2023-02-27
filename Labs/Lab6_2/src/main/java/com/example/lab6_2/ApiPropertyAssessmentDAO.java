@@ -24,7 +24,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     String getData(String queryAddition) {
-        String url = endPoint + "?" + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
+        String url = endPoint + "?" + queryAddition;//URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -87,7 +87,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments(int offset) {
-        String response = getData("$limit=1000&offset=" + offset);
+        String response = getData("$limit=1000&$offset=" + offset + "&$order=account_number");
 
         return processData(response);
     }

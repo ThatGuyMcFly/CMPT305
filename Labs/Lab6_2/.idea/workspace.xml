@@ -5,48 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="96263a6b-6a19-4097-b2f2-8cca5b78e9ce" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/ApiPropertyAssessmentDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/AssessmentClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/CsvPropertyAssessmentDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/PropertyAssessment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/PropertyAssessmentApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/PropertyAssessmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Lab6/src/main/java/com/example/lab6_2/PropertyAssessmentDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.~lock.Property_Assessment_Data_2022.csv#" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Property_Assessment_Data_2022.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Address.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/AssessmentClass.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Location.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessment-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessment.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentController.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentDAO.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/AssessmentClasses.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/Source.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/ApiPropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/ApiPropertyAssessmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/CsvPropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/CsvPropertyAssessmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessmentApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessmentApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/PropertyAssessmentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../examples/02-Using TableView/Using TableView/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../examples/02-Using TableView/Using TableView/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
