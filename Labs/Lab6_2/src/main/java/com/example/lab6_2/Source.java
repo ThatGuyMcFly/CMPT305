@@ -6,7 +6,7 @@ public enum Source {
     API("Edmonton's Open Data Portal");
 
     private final String source;
-    private Source(String source) {
+    Source(String source) {
         this.source = source;
     }
 

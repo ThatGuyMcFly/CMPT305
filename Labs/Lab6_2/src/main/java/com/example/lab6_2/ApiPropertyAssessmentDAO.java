@@ -7,8 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
@@ -24,7 +23,13 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     String getData(String queryAddition) {
-        String url = endPoint + "?" + queryAddition;//URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
+        String url = endPoint + "?";// + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
+
+        if (queryAddition.contains(" ")){
+            url = url + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
+        } else {
+            url = url + queryAddition;
+        }
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -90,5 +95,20 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         String response = getData("$limit=1000&$offset=" + offset + "&$order=account_number");
 
         return processData(response);
+    }
+
+    @Override
+    public Set<String> getAssessmentClasses() {
+        Set<String> assessmentClassSet = new HashSet<>();
+
+        for (int i = 1; i < 4; i++) {
+            String response = getData("$select=distinct+mill_class_" + i);
+
+            String[] assessmentClassArray = response.replaceAll("\"", "").split("\n");
+
+            assessmentClassSet.addAll(Arrays.asList(assessmentClassArray).subList(1, assessmentClassArray.length));
+        }
+
+        return assessmentClassSet;
     }
 }

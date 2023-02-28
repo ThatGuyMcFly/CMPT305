@@ -1,6 +1,7 @@
 package com.example.lab6_2;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PropertyAssessmentDAO {
     PropertyAssessment getByAccountNumber(int accountNumber);
@@ -8,4 +9,5 @@ public interface PropertyAssessmentDAO {
     List<PropertyAssessment> getByAssessmentClass(String assessmentClass);
     List<PropertyAssessment> getAssessments();
     List<PropertyAssessment> getAssessments(int offset);
+    Set<String> getAssessmentClasses();
 }

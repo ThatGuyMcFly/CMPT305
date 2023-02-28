@@ -13,8 +13,9 @@ import javafx.stage.Stage;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
-
+import java.util.Set;
 
 
 public class PropertyAssessmentApplication extends Application {
@@ -42,8 +43,53 @@ public class PropertyAssessmentApplication extends Application {
         primaryStage.show();
     }
 
+    private void loadData(ObservableList<String> assessmentClasses, ComboBox<String> sourceSelect) {
+        final Source CSV = Source.CSV;
+        final Source API = Source.API;
+
+        propertyAssessments.clear();
+        assessmentClasses.clear();
+        String source = sourceSelect.getValue();
+        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
+        if(source.equals(CSV.getSource())) {
+            CsvPropertyAssessmentDAO propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
+            propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+            Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
+            assessmentClasses.addAll(assessmentClassSet);
+        } else if(source.equals(API.getSource())) {
+            ApiPropertyAssessmentDAO propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
+            propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+            Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
+            assessmentClasses.addAll(assessmentClassSet);
+        }
+
+        if (propertyAssessmentList.size() > 0) {
+            propertyAssessments.addAll(propertyAssessmentList);
+        }
+    }
+
     private void configureSourceSelect() {
         selectionVBox = new VBox(10);
+
+        VBox propertyFindVBox = new VBox(10);
+
+        VBox assessmentClassVBox = new VBox(10);
+
+        Label assessmentClassLabel = new Label("Assessment Class:");
+
+        final ObservableList<String> assessmentClasses = FXCollections.observableArrayList();
+
+        ComboBox<String> assessmentClassSelect= new ComboBox<>(assessmentClasses);
+
+        assessmentClassSelect.prefWidthProperty().bind(assessmentClassVBox.widthProperty());
+
+        assessmentClassVBox.getChildren().addAll(assessmentClassLabel, assessmentClassSelect);
+
+        propertyFindVBox.prefWidthProperty().bind(selectionVBox.widthProperty());
+
+        propertyFindVBox.getChildren().addAll(assessmentClassVBox);
+
+        VBox sourceSelectVBox = new VBox(10);
 
         final Source CSV = Source.CSV;
         final Source API = Source.API;
@@ -60,28 +106,16 @@ public class PropertyAssessmentApplication extends Application {
         Button getDataButton = new Button("Read Data");
 
         getDataButton.setOnAction(event -> {
-            propertyAssessments.clear();
-
-            String source = sourceSelect.getValue();
-            List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
-            if(source.equals(CSV.getSource())) {
-                CsvPropertyAssessmentDAO propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
-                propertyAssessmentList = propertyAssessmentDAO.getAssessments();
-            } else if(source.equals(API.getSource())) {
-                ApiPropertyAssessmentDAO propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
-                propertyAssessmentList = propertyAssessmentDAO.getAssessments();
-            }
-
-            if (propertyAssessmentList.size() > 0) {
-                propertyAssessments.addAll(propertyAssessmentList);
-            }
+            loadData(assessmentClasses, sourceSelect);
         });
 
         getDataButton.prefWidthProperty().bind(selectionVBox.widthProperty());
 
         Label selectionBoxLabel = new Label("Select Data Source");
 
-        selectionVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
+        sourceSelectVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
+
+        selectionVBox.getChildren().addAll(sourceSelectVBox, propertyFindVBox);
         selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.1));
     }
 

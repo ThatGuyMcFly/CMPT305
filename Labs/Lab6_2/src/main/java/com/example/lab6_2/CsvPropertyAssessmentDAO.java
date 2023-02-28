@@ -4,18 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     private final List<PropertyAssessment> propertyAssessments;
-    private final String defaultCsvFile = "Property_Assessment_Data_2022.csv";
 
     public CsvPropertyAssessmentDAO() {
         List<String[]> propertyAssessmentData;
         try {
+            String defaultCsvFile = "Property_Assessment_Data_2022.csv";
             propertyAssessmentData = this.readInCsv(defaultCsvFile);
         } catch (IOException error) {
             propertyAssessments = new ArrayList<>();
@@ -230,8 +228,20 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments(int offset) {
-        List<PropertyAssessment> propertyAssessmentSubList = propertyAssessments.subList(offset, offset+10);
-        return propertyAssessmentSubList;
+        return propertyAssessments.subList(offset, offset+1000);
+    }
+
+    @Override
+    public Set<String> getAssessmentClasses() {
+        Set<String> assessmentClassSet = new HashSet<>();
+
+        for(PropertyAssessment propertyAssessment: propertyAssessments) {
+            for (AssessmentClass assessmentClass: propertyAssessment.getAssessmentClassList()){
+                assessmentClassSet.add(assessmentClass.getAssessmentClassName());
+            }
+        }
+
+        return assessmentClassSet;
     }
 
     /**
