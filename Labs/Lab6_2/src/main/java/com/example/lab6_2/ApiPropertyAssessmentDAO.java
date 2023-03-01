@@ -22,14 +22,38 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         this.endPoint = endPoint;
     }
 
-    String getData(String queryAddition) {
-        String url = endPoint + "?";// + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
-
-        if (queryAddition.contains(" ")){
-            url = url + URLEncoder.encode(queryAddition, StandardCharsets.UTF_8);
-        } else {
-            url = url + queryAddition;
+    private int getIndex(String[] stringArray, String str) {
+        if (stringArray == null) {
+            return -1;
         }
+
+        for(int i = 0; i < stringArray.length; i ++) {
+            if (stringArray[i].equals(str)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private String createUrl(String urlQuery) {
+        String[] queryArray = urlQuery.split("&");
+        StringBuilder url = new StringBuilder(endPoint);// + URLEncoder.encode(queryParameters, StandardCharsets.UTF_8);
+
+        for (String subQuery: queryArray) {
+            int equalIndex = subQuery.indexOf('=');
+            url.append(subQuery.substring(0, equalIndex + 1)).append(URLEncoder.encode(subQuery.substring(equalIndex + 1), StandardCharsets.UTF_8));
+
+            if (getIndex(queryArray, subQuery) != queryArray.length - 1){
+                url.append("&");
+            }
+        }
+
+        return url.toString();
+    }
+
+    private String getData(String query) {
+        String url = createUrl(query);
 
         HttpClient client = HttpClient.newHttpClient();
 
@@ -48,7 +72,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public PropertyAssessment getByAccountNumber(int accountNumber) {
-        String response = getData("account_number = '" + accountNumber + "'");
+        String response = getData("?account_number=" + accountNumber);
 
         String[] propertyAssessmentStringArray = response.replaceAll("\"", "").split("\n");
 
@@ -73,14 +97,14 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getByNeighbourhood(String neighbourhood) {
-        String response = getData("neighbourhood = '" + neighbourhood.toUpperCase() + "'");
+        String response = getData("?neighbourhood = " + "'" + neighbourhood.toUpperCase() + "'");
 
         return processData(response);
     }
 
     @Override
     public List<PropertyAssessment> getByAssessmentClass(String assessmentClass) {
-        String response = getData("$where=mill_class_1 = '" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "'");
+        String response = getData("?$where=mill_class_1 = " + "'" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "'");
 
         return processData(response);
     }
@@ -92,7 +116,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments(int offset) {
-        String response = getData("$limit=1000&$offset=" + offset + "&$order=account_number");
+        String response = getData("?$limit=1000&$offset=" + offset + "&$order=account_number");
 
         return processData(response);
     }
@@ -102,7 +126,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         Set<String> assessmentClassSet = new HashSet<>();
 
         for (int i = 1; i < 4; i++) {
-            String response = getData("$select=distinct+mill_class_" + i);
+            String response = getData("?$select=distinct mill_class_" + i);
 
             String[] assessmentClassArray = response.replaceAll("\"", "").split("\n");
 
