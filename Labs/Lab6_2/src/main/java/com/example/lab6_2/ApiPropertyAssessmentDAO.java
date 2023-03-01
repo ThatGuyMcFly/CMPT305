@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.IntStream;
 
 
 public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
@@ -23,17 +24,10 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     private int getIndex(String[] stringArray, String str) {
-        if (stringArray == null) {
-            return -1;
-        }
-
-        for(int i = 0; i < stringArray.length; i ++) {
-            if (stringArray[i].equals(str)) {
-                return i;
-            }
-        }
-
-        return -1;
+        return IntStream.range(0, stringArray.length)
+                .filter(i -> str == stringArray[i])
+                .findFirst()
+                .orElse(-1);
     }
 
     private String createUrl(String urlQuery) {
