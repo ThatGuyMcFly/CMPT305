@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
@@ -84,26 +85,12 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return propertyAssessments;
     }
 
-    /**
-     * Gets the minimum and maximum assessed value of the property assessments
-     * @return an array with the minimum and maximum assessed values in the following format: {minimum, maximum}
-     */
-    public int[] getMinMax() {
+    public int getMin() {
+        return Collections.min(propertyAssessments, Comparator.comparing(PropertyAssessment::getAssessedValue)).getAssessedValue();
+    }
 
-        int min = propertyAssessments.get(0).getAssessedValue();
-        int max = min;
-
-        for (int i = 1; i < propertyAssessments.size(); i++) {
-            int propertyValue = propertyAssessments.get(i).getAssessedValue();
-
-            if (propertyValue < min) {
-                min = propertyValue;
-            } else if (propertyValue > max) {
-                max = propertyValue;
-            }
-        }
-
-        return new int[]{min, max};
+    public int getMax() {
+        return Collections.max(propertyAssessments, Comparator.comparing(PropertyAssessment::getAssessedValue)).getAssessedValue();
     }
 
     /**
@@ -111,9 +98,7 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
      * @return an integer value of the range
      */
     public int getRange(){
-        int[] minMax = getMinMax();
-
-        return minMax[1] - minMax[0];
+        return getMax() - getMin();
     }
 
     /**
@@ -203,22 +188,30 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
     /**
      * Gets a list of property assessments with a specified assessment class
      *
-     * @param assessmentClass the specified assessment class
+     * @param assessmentClassName the specified assessment class
      * @return a Property Assessments object with all the property assessments with a specified assessment class
      */
     @Override
-    public List<PropertyAssessment> getByAssessmentClass (String assessmentClass) {
-        List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
+    public List<PropertyAssessment> getByAssessmentClass (String assessmentClassName) {
+//        List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
+//
+//        for(PropertyAssessment propertyAssessment: propertyAssessments) {
+//            for(AssessmentClass propertyAssessmentClass: propertyAssessment.getAssessmentClassList()){
+//                if(propertyAssessmentClass.getAssessmentClassName().equalsIgnoreCase(assessmentClass)){
+//                    assessmentClassPropertyAssessments.add(propertyAssessment);
+//                }
+//            }
+//        }
+//
+//        return assessmentClassPropertyAssessments;
 
-        for(PropertyAssessment propertyAssessment: propertyAssessments) {
-            for(AssessmentClass propertyAssessmentClass: propertyAssessment.getAssessmentClassList()){
-                if(propertyAssessmentClass.getAssessmentClassName().equalsIgnoreCase(assessmentClass)){
-                    assessmentClassPropertyAssessments.add(propertyAssessment);
-                }
-            }
-        }
-
-        return assessmentClassPropertyAssessments;
+        return propertyAssessments.stream()
+                .filter(propertyAssessment -> propertyAssessment.getAssessmentClassList()
+                        .stream()
+                        .map(AssessmentClass::getAssessmentClassName)
+                        .anyMatch(assessmentClassName::equals))
+                .limit(20)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -228,20 +221,16 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments(int offset) {
-        return propertyAssessments.subList(offset, offset+1000);
+        return propertyAssessments.subList(offset, offset+20);
     }
 
     @Override
     public Set<String> getAssessmentClasses() {
-        Set<String> assessmentClassSet = new HashSet<>();
-
-        for(PropertyAssessment propertyAssessment: propertyAssessments) {
-            for (AssessmentClass assessmentClass: propertyAssessment.getAssessmentClassList()){
-                assessmentClassSet.add(assessmentClass.getAssessmentClassName());
-            }
-        }
-
-        return assessmentClassSet;
+        return propertyAssessments.stream()
+                .map(PropertyAssessment::getAssessmentClassList)
+                .flatMap(List::stream)
+                .map(AssessmentClass::getAssessmentClassName)
+                .collect(Collectors.toSet());
     }
 
     /**

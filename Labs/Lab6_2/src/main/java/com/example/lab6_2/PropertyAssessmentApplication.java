@@ -9,13 +9,16 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 import java.util.Set;
+
+
 
 
 public class PropertyAssessmentApplication extends Application {
@@ -24,6 +27,7 @@ public class PropertyAssessmentApplication extends Application {
     private VBox tableVBox;
     private VBox selectionVBox;
     private ObservableList<PropertyAssessment> propertyAssessments;
+    PropertyAssessmentDAO propertyAssessmentDAO;
 
     @Override
     public void start(Stage primaryStage){
@@ -47,21 +51,33 @@ public class PropertyAssessmentApplication extends Application {
         final Source CSV = Source.CSV;
         final Source API = Source.API;
 
+        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
+
         propertyAssessments.clear();
         assessmentClasses.clear();
         String source = sourceSelect.getValue();
-        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
         if(source.equals(CSV.getSource())) {
-            CsvPropertyAssessmentDAO propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
+            propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
             propertyAssessmentList = propertyAssessmentDAO.getAssessments();
             Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
             assessmentClasses.addAll(assessmentClassSet);
         } else if(source.equals(API.getSource())) {
-            ApiPropertyAssessmentDAO propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
+            propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
             propertyAssessmentList = propertyAssessmentDAO.getAssessments();
             Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
             assessmentClasses.addAll(assessmentClassSet);
         }
+
+        if (propertyAssessmentList.size() > 0) {
+            propertyAssessments.addAll(propertyAssessmentList);
+        }
+    }
+
+    private void search(ComboBox<String> assessmentClassSelect) {
+        List<PropertyAssessment> propertyAssessmentList;
+
+        propertyAssessments.clear();
+        propertyAssessmentList = propertyAssessmentDAO.getByAssessmentClass(assessmentClassSelect.getValue());
 
         if (propertyAssessmentList.size() > 0) {
             propertyAssessments.addAll(propertyAssessmentList);
@@ -77,7 +93,7 @@ public class PropertyAssessmentApplication extends Application {
 
         Label assessmentClassLabel = new Label("Assessment Class:");
 
-        final ObservableList<String> assessmentClasses = FXCollections.observableArrayList();
+        ObservableList<String> assessmentClasses = FXCollections.observableArrayList();
 
         ComboBox<String> assessmentClassSelect= new ComboBox<>(assessmentClasses);
 
@@ -91,10 +107,10 @@ public class PropertyAssessmentApplication extends Application {
 
         VBox sourceSelectVBox = new VBox(10);
 
-        final Source CSV = Source.CSV;
-        final Source API = Source.API;
+        Source CSV = Source.CSV;
+        Source API = Source.API;
 
-        final ObservableList<String> dataSources = FXCollections.observableArrayList(
+        ObservableList<String> dataSources = FXCollections.observableArrayList(
                 CSV.getSource(),
                 API.getSource()
         );
@@ -105,18 +121,26 @@ public class PropertyAssessmentApplication extends Application {
 
         Button getDataButton = new Button("Read Data");
 
-        getDataButton.setOnAction(event -> {
-            loadData(assessmentClasses, sourceSelect);
-        });
+        getDataButton.setOnAction( event -> loadData(assessmentClasses, sourceSelect));
 
         getDataButton.prefWidthProperty().bind(selectionVBox.widthProperty());
 
         Label selectionBoxLabel = new Label("Select Data Source");
+        selectionBoxLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
         sourceSelectVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
 
-        selectionVBox.getChildren().addAll(sourceSelectVBox, propertyFindVBox);
-        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.1));
+        Button searchButton = new Button("Search");
+
+        searchButton.setOnAction( event -> search(assessmentClassSelect));
+
+        searchButton.prefWidthProperty().bind(selectionVBox.widthProperty().multiply(0.5));
+
+        Label findPropertyLabel = new Label("Find Property Assessment");
+        findPropertyLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+
+        selectionVBox.getChildren().addAll(sourceSelectVBox, findPropertyLabel, propertyFindVBox, searchButton);
+        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.12));
     }
 
     private void configureTable() {
@@ -224,12 +248,13 @@ public class PropertyAssessmentApplication extends Application {
         table.getColumns().add(locationCol);
 
         Label tableLabel = new Label("Edmonton Property Assessments (2022)");
+        tableLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
         table.prefWidthProperty().bind(tableVBox.widthProperty());
         table.prefHeightProperty().bind(tableVBox.heightProperty());
 
         tableVBox.getChildren().addAll(tableLabel, table);
-        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.9));
+        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.88));
     }
 
     public static void main(String[] args) {
