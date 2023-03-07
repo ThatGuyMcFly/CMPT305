@@ -193,17 +193,6 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
      */
     @Override
     public List<PropertyAssessment> getByAssessmentClass (String assessmentClassName) {
-//        List<PropertyAssessment> assessmentClassPropertyAssessments = new ArrayList<>();
-//
-//        for(PropertyAssessment propertyAssessment: propertyAssessments) {
-//            for(AssessmentClass propertyAssessmentClass: propertyAssessment.getAssessmentClassList()){
-//                if(propertyAssessmentClass.getAssessmentClassName().equalsIgnoreCase(assessmentClass)){
-//                    assessmentClassPropertyAssessments.add(propertyAssessment);
-//                }
-//            }
-//        }
-//
-//        return assessmentClassPropertyAssessments;
 
         return propertyAssessments.stream()
                 .filter(propertyAssessment -> propertyAssessment.getAssessmentClassList()
@@ -221,7 +210,7 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments(int offset) {
-        return propertyAssessments.subList(offset, offset+20);
+        return propertyAssessments.subList(offset, propertyAssessments.size());
     }
 
     @Override

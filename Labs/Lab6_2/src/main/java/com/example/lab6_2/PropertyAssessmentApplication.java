@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
-
-
 public class PropertyAssessmentApplication extends Application {
 
     private HBox mainHBox;
@@ -51,22 +48,21 @@ public class PropertyAssessmentApplication extends Application {
         final Source CSV = Source.CSV;
         final Source API = Source.API;
 
-        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
+        List<PropertyAssessment> propertyAssessmentList;
 
         propertyAssessments.clear();
         assessmentClasses.clear();
         String source = sourceSelect.getValue();
+
         if(source.equals(CSV.getSource())) {
             propertyAssessmentDAO = new CsvPropertyAssessmentDAO();
-            propertyAssessmentList = propertyAssessmentDAO.getAssessments();
-            Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
-            assessmentClasses.addAll(assessmentClassSet);
         } else if(source.equals(API.getSource())) {
             propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
-            propertyAssessmentList = propertyAssessmentDAO.getAssessments();
-            Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
-            assessmentClasses.addAll(assessmentClassSet);
         }
+
+        propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+        Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
+        assessmentClasses.addAll(assessmentClassSet);
 
         if (propertyAssessmentList.size() > 0) {
             propertyAssessments.addAll(propertyAssessmentList);
@@ -76,11 +72,13 @@ public class PropertyAssessmentApplication extends Application {
     private void search(ComboBox<String> assessmentClassSelect) {
         List<PropertyAssessment> propertyAssessmentList;
 
-        propertyAssessments.clear();
-        propertyAssessmentList = propertyAssessmentDAO.getByAssessmentClass(assessmentClassSelect.getValue());
+        if (propertyAssessmentDAO != null) {
+            propertyAssessments.clear();
+            propertyAssessmentList = propertyAssessmentDAO.getByAssessmentClass(assessmentClassSelect.getValue());
 
-        if (propertyAssessmentList.size() > 0) {
-            propertyAssessments.addAll(propertyAssessmentList);
+            if (propertyAssessmentList.size() > 0) {
+                propertyAssessments.addAll(propertyAssessmentList);
+            }
         }
     }
 
