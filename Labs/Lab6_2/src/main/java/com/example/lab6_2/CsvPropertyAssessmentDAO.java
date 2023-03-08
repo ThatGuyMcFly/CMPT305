@@ -214,6 +214,11 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     @Override
+    public List<PropertyAssessment> getAssessedValueRange(int min, int max) {
+        return null;
+    }
+
+    @Override
     public Set<String> getAssessmentClasses() {
         return propertyAssessments.stream()
                 .map(PropertyAssessment::getAssessmentClassList)

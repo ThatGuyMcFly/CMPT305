@@ -14,37 +14,46 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 public class PropertyAssessmentApplication extends Application {
 
-    private HBox mainHBox;
-    private VBox tableVBox;
-    private VBox selectionVBox;
     private ObservableList<PropertyAssessment> propertyAssessments;
     PropertyAssessmentDAO propertyAssessmentDAO;
+
+    private TextField accountNumberTextField;
+    private TextField addressTextField;
+    private TextField neighbourhoodTextField;
+    private TextField minValueTextField;
+    private TextField maxValueTextField;
+    ComboBox<String> sourceSelect;
+    ObservableList<String> assessmentClasses;
+
+    ComboBox<String> assessmentClassSelect;
+    Set<String> assessmentClassSet;
 
     @Override
     public void start(Stage primaryStage){
         primaryStage.setTitle("Property Assessments");
-        mainHBox = new HBox(10);
+        HBox mainHBox = new HBox(10);
         mainHBox.setPadding(new Insets(10, 10, 10, 10));
         Scene scene = new Scene(mainHBox, 1000, 1000);
         primaryStage.setScene(scene);
 
         primaryStage.setMaximized(true);
 
-        configureTable();
+        VBox tableVBox =  configureTable();
+        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.88));
 
-        configureSourceSelect();
+        VBox selectionVBox = configureDataSelection();
+        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.12));
 
         mainHBox.getChildren().addAll(selectionVBox, tableVBox);
         primaryStage.show();
     }
 
-    private void loadData(ObservableList<String> assessmentClasses, ComboBox<String> sourceSelect) {
+    private void loadData() {
         final Source CSV = Source.CSV;
         final Source API = Source.API;
 
@@ -61,7 +70,7 @@ public class PropertyAssessmentApplication extends Application {
         }
 
         propertyAssessmentList = propertyAssessmentDAO.getAssessments();
-        Set<String> assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
+        assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
         assessmentClasses.addAll(assessmentClassSet);
 
         if (propertyAssessmentList.size() > 0) {
@@ -69,7 +78,7 @@ public class PropertyAssessmentApplication extends Application {
         }
     }
 
-    private void search(ComboBox<String> assessmentClassSelect) {
+    private void search() {
         List<PropertyAssessment> propertyAssessmentList;
 
         if (propertyAssessmentDAO != null) {
@@ -82,28 +91,12 @@ public class PropertyAssessmentApplication extends Application {
         }
     }
 
-    private void configureSourceSelect() {
-        selectionVBox = new VBox(10);
+    private void reset(){
 
-        VBox propertyFindVBox = new VBox(10);
+    }
 
-        VBox assessmentClassVBox = new VBox(10);
-
-        Label assessmentClassLabel = new Label("Assessment Class:");
-
-        ObservableList<String> assessmentClasses = FXCollections.observableArrayList();
-
-        ComboBox<String> assessmentClassSelect= new ComboBox<>(assessmentClasses);
-
-        assessmentClassSelect.prefWidthProperty().bind(assessmentClassVBox.widthProperty());
-
-        assessmentClassVBox.getChildren().addAll(assessmentClassLabel, assessmentClassSelect);
-
-        propertyFindVBox.prefWidthProperty().bind(selectionVBox.widthProperty());
-
-        propertyFindVBox.getChildren().addAll(assessmentClassVBox);
-
-        VBox sourceSelectVBox = new VBox(10);
+    private VBox createDataSelectVBox() {
+        VBox dataSourceSelectVBox = new VBox(10);
 
         Source CSV = Source.CSV;
         Source API = Source.API;
@@ -113,36 +106,131 @@ public class PropertyAssessmentApplication extends Application {
                 API.getSource()
         );
 
-        ComboBox<String> sourceSelect = new ComboBox<>(dataSources);
+        sourceSelect = new ComboBox<>(dataSources);
 
-        sourceSelect.prefWidthProperty().bind(selectionVBox.widthProperty());
+        sourceSelect.prefWidthProperty().bind(dataSourceSelectVBox.widthProperty());
 
         Button getDataButton = new Button("Read Data");
 
-        getDataButton.setOnAction( event -> loadData(assessmentClasses, sourceSelect));
+        getDataButton.setOnAction( event -> loadData());
 
-        getDataButton.prefWidthProperty().bind(selectionVBox.widthProperty());
+        getDataButton.prefWidthProperty().bind(dataSourceSelectVBox.widthProperty());
 
         Label selectionBoxLabel = new Label("Select Data Source");
         selectionBoxLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
-        sourceSelectVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
+        dataSourceSelectVBox.getChildren().addAll(selectionBoxLabel, sourceSelect, getDataButton);
+
+        return dataSourceSelectVBox;
+    }
+
+    private VBox createAssessmentValueRangeVBox() {
+        Label assessedValueRangeLabel = new Label("Assessed Value Range:");
+
+        minValueTextField = new TextField();
+        minValueTextField.setPromptText("Min Value");
+
+        maxValueTextField = new TextField();
+        maxValueTextField.setPromptText("Max Value");
+
+        HBox minMaxHBox = new HBox(10);
+
+        minMaxHBox.getChildren().addAll(minValueTextField, maxValueTextField);
+
+        VBox assessedValueRangeVBox = new VBox(10);
+
+        assessedValueRangeVBox.getChildren().addAll(assessedValueRangeLabel, minMaxHBox);
+
+        return assessedValueRangeVBox;
+    }
+
+    /**
+     * Creates a VBox with the specified label and Control and matches
+     * the control objects width to the new VBox
+     *
+     * @param label A string to give the label
+     * @param control the control object in the VBoc
+     * @return the new VBox with the label and control object
+     */
+    private VBox createControlVBox(String label, Control control) {
+        Label vBoxLabel = new Label(label);
+        VBox vBox = new VBox(10);
+        vBox.getChildren().addAll(vBoxLabel, control);
+
+        control.prefWidthProperty().bind(vBox.widthProperty());
+
+        return vBox;
+    }
+
+    private VBox createAssessmentClassSelectVBox() {
+        assessmentClasses = FXCollections.observableArrayList();
+        assessmentClassSelect= new ComboBox<>(assessmentClasses);
+        return createControlVBox("Assessment Class:", assessmentClassSelect);
+    }
+
+    private VBox createTextFieldVbox(String label, TextField textField) {
+        textField = new TextField();
+        return createControlVBox(label, textField);
+    }
+
+    private HBox createButtonHBox () {
+        HBox buttonHBox = new HBox(10);
 
         Button searchButton = new Button("Search");
 
-        searchButton.setOnAction( event -> search(assessmentClassSelect));
+        searchButton.setOnAction(event -> search());
 
-        searchButton.prefWidthProperty().bind(selectionVBox.widthProperty().multiply(0.5));
+        Button resetButton = new Button("Reset");
+
+        resetButton.setOnAction(event -> reset());
+
+        searchButton.prefWidthProperty().bind(buttonHBox.widthProperty().multiply(0.5));
+        resetButton.prefWidthProperty().bind(buttonHBox.widthProperty().multiply(0.5));
+
+        buttonHBox.getChildren().addAll(searchButton, resetButton);
+
+        return buttonHBox;
+    }
+
+    private VBox createPropertyFindVBox() {
+        VBox propertyFindVBox = new VBox(10);
+
+        VBox accountNumberVBox = createTextFieldVbox("Account Number:", accountNumberTextField);
+
+        VBox addressVBox = createTextFieldVbox("Address (#suite #house street):", addressTextField);
+
+        VBox neighbourhoodVBox = createTextFieldVbox("Neighbourhood:", neighbourhoodTextField );
+
+        VBox assessmentClassVBox = createAssessmentClassSelectVBox();
+
+        VBox assessedValueRangeVBox = createAssessmentValueRangeVBox();
 
         Label findPropertyLabel = new Label("Find Property Assessment");
         findPropertyLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
-        selectionVBox.getChildren().addAll(sourceSelectVBox, findPropertyLabel, propertyFindVBox, searchButton);
-        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.12));
+        propertyFindVBox.getChildren().addAll(findPropertyLabel, accountNumberVBox, addressVBox, neighbourhoodVBox, assessmentClassVBox, assessedValueRangeVBox);
+
+        return propertyFindVBox;
     }
 
-    private void configureTable() {
-        tableVBox = new VBox(10);
+    private VBox configureDataSelection() {
+        VBox selectionVBox = new VBox(10);
+
+        VBox dataSourceSelectVBox = createDataSelectVBox();
+
+        VBox propertyFindVBox = createPropertyFindVBox();
+
+        HBox buttonHBox = createButtonHBox();
+
+        buttonHBox.prefWidthProperty().bind(selectionVBox.widthProperty());
+
+        selectionVBox.getChildren().addAll(dataSourceSelectVBox, propertyFindVBox, buttonHBox);
+
+        return selectionVBox;
+    }
+
+    private VBox configureTable() {
+        VBox tableVBox = new VBox(10);
         propertyAssessments = FXCollections.observableArrayList();
 
         TableView<PropertyAssessment> table = new TableView<>();
@@ -252,7 +340,8 @@ public class PropertyAssessmentApplication extends Application {
         table.prefHeightProperty().bind(tableVBox.heightProperty());
 
         tableVBox.getChildren().addAll(tableLabel, table);
-        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.88));
+
+        return tableVBox;
     }
 
     public static void main(String[] args) {

@@ -129,4 +129,9 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
         return assessmentClassSet;
     }
+
+    @Override
+    public List<PropertyAssessment> getAssessedValueRange(int min, int max) {
+        return null;
+    }
 }

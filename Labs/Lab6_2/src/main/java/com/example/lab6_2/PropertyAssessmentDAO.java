@@ -10,4 +10,5 @@ public interface PropertyAssessmentDAO {
     List<PropertyAssessment> getAssessments();
     List<PropertyAssessment> getAssessments(int offset);
     Set<String> getAssessmentClasses();
+    List<PropertyAssessment> getAssessedValueRange(int min, int max);
 }
