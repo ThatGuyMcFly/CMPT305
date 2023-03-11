@@ -14,21 +14,22 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.text.NumberFormat;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PropertyAssessmentApplication extends Application {
 
     private ObservableList<PropertyAssessment> propertyAssessments;
-    PropertyAssessmentDAO propertyAssessmentDAO;
+    private PropertyAssessmentDAO propertyAssessmentDAO;
 
-    private TextField accountNumberTextField;
-    private TextField addressTextField;
-    private TextField neighbourhoodTextField;
-    private TextField minValueTextField;
-    private TextField maxValueTextField;
-    ComboBox<String> sourceSelect;
-    ObservableList<String> assessmentClasses;
+    private TextField accountNumberTextField = new TextField();
+    private TextField addressTextField = new TextField();
+    private TextField neighbourhoodTextField = new TextField();
+    private TextField minValueTextField = new TextField();
+    private TextField maxValueTextField = new TextField();
+    private ComboBox<String> sourceSelect;
+    private ObservableList<String> assessmentClasses;
 
     ComboBox<String> assessmentClassSelect;
     Set<String> assessmentClassSet;
@@ -78,21 +79,101 @@ public class PropertyAssessmentApplication extends Application {
         }
     }
 
-    private void search() {
-        List<PropertyAssessment> propertyAssessmentList;
-
+    private PropertyAssessment getPropertyByAccountNumber() {
+        String accountNumber = accountNumberTextField.getText();
         if (propertyAssessmentDAO != null) {
-            propertyAssessments.clear();
-            propertyAssessmentList = propertyAssessmentDAO.getByAssessmentClass(assessmentClassSelect.getValue());
-
-            if (propertyAssessmentList.size() > 0) {
-                propertyAssessments.addAll(propertyAssessmentList);
+            try {
+                return propertyAssessmentDAO.getByAccountNumber(Integer.parseInt(accountNumber));
+            } catch (NumberFormatException error) {
+                return null;
             }
         }
+
+        return null;
+    }
+
+    private List<PropertyAssessment> getPropertyAssessmentsByAddress() {
+        String address = addressTextField.getText();
+
+        if (address.isEmpty()) {
+            return null;
+        }
+
+        return propertyAssessmentDAO.getByAddress(address);
+    }
+
+    private List<PropertyAssessment> getPropertyAssessmentByNeighbourhood() {
+        String neighbourhood = neighbourhoodTextField.getText();
+
+        if (neighbourhood.isEmpty()) {
+            return null;
+        }
+
+        return propertyAssessmentDAO.getByNeighbourhood(neighbourhood);
+    }
+
+    private List<PropertyAssessment> getPropertyAssessmentByAssessmentClass() {
+        String assessmentClass = assessmentClassSelect.getValue();
+
+        if(assessmentClass == null || assessmentClass == "") {
+            return null;
+        }
+
+        return propertyAssessmentDAO.getByAssessmentClass(assessmentClass);
+    }
+
+    private List<PropertyAssessment> getFilteredList() {
+        List<PropertyAssessment> addressList = getPropertyAssessmentsByAddress();
+        List<PropertyAssessment> neighbouthoodList = getPropertyAssessmentByNeighbourhood();
+        List<PropertyAssessment> assessmentClassList = getPropertyAssessmentByAssessmentClass();
+
+        List<List<PropertyAssessment>> nonNullLists = Stream
+                .of(addressList, neighbouthoodList, assessmentClassList)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        List<PropertyAssessment> filteredList = new ArrayList<>();
+
+        if(nonNullLists.size() > 0){
+            filteredList = nonNullLists.get(0);
+
+            for(int i = 1; i < nonNullLists.size(); i++) {
+                filteredList.retainAll(nonNullLists.get(i));
+            }
+        } else {
+            filteredList = propertyAssessmentDAO.getAssessments();
+        }
+
+
+        return filteredList;
+    }
+
+    private void search() {
+        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
+        PropertyAssessment propertyAssessment;
+
+        if (propertyAssessmentDAO == null) {
+            return;
+        }
+
+        propertyAssessments.clear();
+
+        if(!accountNumberTextField.getText().isEmpty()) {
+            propertyAssessment = getPropertyByAccountNumber();
+            propertyAssessments.add(propertyAssessment);
+        } else {
+            propertyAssessments.addAll(getFilteredList());
+        }
+
     }
 
     private void reset(){
-
+        accountNumberTextField.setText("");
+        addressTextField.setText("");
+        neighbourhoodTextField.setText("");
+        assessmentClassSelect.setValue("");
+        minValueTextField.setText("");
+        maxValueTextField.setText("");
     }
 
     private VBox createDataSelectVBox() {
@@ -168,11 +249,6 @@ public class PropertyAssessmentApplication extends Application {
         return createControlVBox("Assessment Class:", assessmentClassSelect);
     }
 
-    private VBox createTextFieldVbox(String label, TextField textField) {
-        textField = new TextField();
-        return createControlVBox(label, textField);
-    }
-
     private HBox createButtonHBox () {
         HBox buttonHBox = new HBox(10);
 
@@ -195,11 +271,11 @@ public class PropertyAssessmentApplication extends Application {
     private VBox createPropertyFindVBox() {
         VBox propertyFindVBox = new VBox(10);
 
-        VBox accountNumberVBox = createTextFieldVbox("Account Number:", accountNumberTextField);
+        VBox accountNumberVBox = createControlVBox("Account Number:", accountNumberTextField);
 
-        VBox addressVBox = createTextFieldVbox("Address (#suite #house street):", addressTextField);
+        VBox addressVBox = createControlVBox("Address (#suite #house street):", addressTextField);
 
-        VBox neighbourhoodVBox = createTextFieldVbox("Neighbourhood:", neighbourhoodTextField );
+        VBox neighbourhoodVBox = createControlVBox("Neighbourhood:", neighbourhoodTextField );
 
         VBox assessmentClassVBox = createAssessmentClassSelectVBox();
 

@@ -15,12 +15,15 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     private final String endPoint;
 
+    private int offset;
+
     public ApiPropertyAssessmentDAO(){
         this("https://data.edmonton.ca/resource/q7d6-ambg.csv");
     }
 
     public ApiPropertyAssessmentDAO(String endPoint){
         this.endPoint = endPoint;
+        this.offset = 1000;
     }
 
     private int getIndex(String[] stringArray, String str) {
@@ -97,6 +100,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     @Override
+    public List<PropertyAssessment> getByAddress(String address) {
+        return null;
+    }
+
+    @Override
     public List<PropertyAssessment> getByAssessmentClass(String assessmentClass) {
         String response = getData("?$where=mill_class_1 = " + "'" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "'");
 
@@ -105,11 +113,6 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     @Override
     public List<PropertyAssessment> getAssessments() {
-        return getAssessments(0);
-    }
-
-    @Override
-    public List<PropertyAssessment> getAssessments(int offset) {
         String response = getData("?$limit=1000&$offset=" + offset + "&$order=account_number");
 
         return processData(response);
