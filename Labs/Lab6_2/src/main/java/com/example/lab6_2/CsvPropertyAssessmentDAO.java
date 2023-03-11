@@ -170,16 +170,7 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return new ArrayList<>(propertyAssessments);
     }
 
-    /**
-     *
-     * @param min
-     * @param max
-     * @return
-     */
-    @Override
-    public List<PropertyAssessment> getAssessedValueRange(int min, int max) {
-        return null;
-    }
+
 
     @Override
     public Set<String> getAssessmentClasses() {
@@ -188,6 +179,20 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
                 .flatMap(List::stream)
                 .map(AssessmentClass::getAssessmentClassName)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public List<PropertyAssessment> getByAssessedValueMinimum(int min) {
+        return propertyAssessments.stream()
+                .filter(propertyAssessment -> propertyAssessment.getAssessedValue() >= min)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PropertyAssessment> getByAssessedValueMaximum(int max) {
+        return propertyAssessments.stream()
+                .filter(propertyAssessment -> propertyAssessment.getAssessedValue() <= max)
+                .collect(Collectors.toList());
     }
 
     @Override

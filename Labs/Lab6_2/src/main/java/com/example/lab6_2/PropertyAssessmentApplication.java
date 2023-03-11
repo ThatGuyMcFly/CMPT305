@@ -11,11 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PropertyAssessmentApplication extends Application {
@@ -72,6 +73,7 @@ public class PropertyAssessmentApplication extends Application {
 
         propertyAssessmentList = propertyAssessmentDAO.getAssessments();
         assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
+        assessmentClassSet.add("");
         assessmentClasses.addAll(assessmentClassSet);
 
         if (propertyAssessmentList.size() > 0) {
@@ -115,24 +117,69 @@ public class PropertyAssessmentApplication extends Application {
     private List<PropertyAssessment> getPropertyAssessmentByAssessmentClass() {
         String assessmentClass = assessmentClassSelect.getValue();
 
-        if(assessmentClass == null || assessmentClass == "") {
+        if(assessmentClass == null || assessmentClass.isEmpty()) {
             return null;
         }
 
         return propertyAssessmentDAO.getByAssessmentClass(assessmentClass);
     }
 
+    private List<PropertyAssessment> getPropertyAssessmentByAssessedValueMin(){
+        String minimum = minValueTextField.getText();
+
+        if(minimum.isEmpty()) {
+            return null;
+        }
+
+        try {
+            int minimumValue = Integer.parseInt(minimum);
+
+            return propertyAssessmentDAO.getByAssessedValueMinimum(minimumValue);
+        } catch (NumberFormatException error) {
+            return null;
+        }
+    }
+
+    private List<PropertyAssessment> getPropertyAssessmentByAssessedValueMax(){
+        String maximum = maxValueTextField.getText();
+
+        if(maximum.isEmpty()) {
+            return null;
+        }
+
+        try {
+            int maximumValue = Integer.parseInt(maximum);
+
+            return propertyAssessmentDAO.getByAssessedValueMaximum(maximumValue);
+        } catch (NumberFormatException error) {
+            return null;
+        }
+    }
+
+    private void showNoDataAlert(String message) {
+        Alert noDataAlert = new Alert(Alert.AlertType.INFORMATION);
+        noDataAlert.setTitle("Search Results");
+        noDataAlert.setHeaderText(null);
+        noDataAlert.setContentText(message);
+
+        noDataAlert.initModality(Modality.APPLICATION_MODAL);
+
+        noDataAlert.showAndWait();
+    }
+
     private List<PropertyAssessment> getFilteredList() {
         List<PropertyAssessment> addressList = getPropertyAssessmentsByAddress();
         List<PropertyAssessment> neighbouthoodList = getPropertyAssessmentByNeighbourhood();
         List<PropertyAssessment> assessmentClassList = getPropertyAssessmentByAssessmentClass();
+        List<PropertyAssessment> assessedValueMinList = getPropertyAssessmentByAssessedValueMin();
+        List<PropertyAssessment> assessedValueMaxList = getPropertyAssessmentByAssessedValueMax();
 
         List<List<PropertyAssessment>> nonNullLists = Stream
-                .of(addressList, neighbouthoodList, assessmentClassList)
+                .of(addressList, neighbouthoodList, assessmentClassList, assessedValueMinList, assessedValueMaxList)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
-        List<PropertyAssessment> filteredList = new ArrayList<>();
+        List<PropertyAssessment> filteredList;
 
         if(nonNullLists.size() > 0){
             filteredList = nonNullLists.get(0);
@@ -149,20 +196,27 @@ public class PropertyAssessmentApplication extends Application {
     }
 
     private void search() {
-        List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
-        PropertyAssessment propertyAssessment;
-
         if (propertyAssessmentDAO == null) {
+            showNoDataAlert("No data source selected");
             return;
         }
 
-        propertyAssessments.clear();
-
         if(!accountNumberTextField.getText().isEmpty()) {
-            propertyAssessment = getPropertyByAccountNumber();
-            propertyAssessments.add(propertyAssessment);
+            PropertyAssessment propertyAssessment = getPropertyByAccountNumber();
+            if (propertyAssessment != null) {
+                propertyAssessments.clear();
+                propertyAssessments.add(propertyAssessment);
+            } else {
+                showNoDataAlert("Oops, did not find anything");
+            }
         } else {
-            propertyAssessments.addAll(getFilteredList());
+            List<PropertyAssessment> filterdList = getFilteredList();
+            if(filterdList.size() == 0) {
+                showNoDataAlert("Oops, did not find anything");
+            } else {
+                propertyAssessments.clear();
+                propertyAssessments.addAll(getFilteredList());
+            }
         }
 
     }
