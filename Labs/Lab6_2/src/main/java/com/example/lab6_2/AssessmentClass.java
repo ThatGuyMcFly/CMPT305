@@ -6,15 +6,32 @@ public class AssessmentClass {
 
     private final String assessmentClassName;
     private final int assessmentClassPercentage;
+
+    /**
+     * Constructor for AssessmentClass Class
+     *
+     * @param assessmentClassName The name of the assessment class
+     * @param assessmentClassPercentage the percentage of the assessment class
+     */
     public AssessmentClass(String assessmentClassName, int assessmentClassPercentage){
         this.assessmentClassName = assessmentClassName;
         this.assessmentClassPercentage = assessmentClassPercentage;
     }
 
+    /**
+     * Getter for the assessment class name
+     *
+     * @return the assessment class name
+     */
     public String getAssessmentClassName() {
         return assessmentClassName;
     }
 
+    /**
+     * Getter for the assessment class percentage
+     *
+     * @return The assessment class percentage
+     */
     public int getAssessmentClassPercentage() {
         return assessmentClassPercentage;
     }

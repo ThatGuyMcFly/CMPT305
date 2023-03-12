@@ -10,6 +10,7 @@ public class Location {
 
     /**
      * Constructor for the Location Class
+     *
      * @param latitude - the location's latitude
      * @param longitude - the location longitude
      */
@@ -20,6 +21,7 @@ public class Location {
 
     /**
      * Getter for the location's latitude
+     *
      * @return the location's latitude
      */
     public double getLatitude() {
@@ -28,6 +30,7 @@ public class Location {
 
     /**
      * Getter for the location's longitude
+     *
      * @return the location's longitude
      */
     public double getLongitude() {

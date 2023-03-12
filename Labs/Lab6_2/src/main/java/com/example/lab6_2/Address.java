@@ -11,6 +11,7 @@ public class Address {
 
     /**
      * Constructor for the Address Class
+     *
      * @param suite - the address suite
      * @param houseNumber - the address's house number
      * @param street - the address's street
@@ -23,6 +24,7 @@ public class Address {
 
     /**
      * Getter for the address's suite
+     *
      * @return the address's suite
      */
     public String getSuite() {
@@ -31,6 +33,7 @@ public class Address {
 
     /**
      * Getter for the addresses house number
+     *
      * @return the address's house number
      */
     public String getHouseNumber() {
@@ -39,6 +42,7 @@ public class Address {
 
     /**
      * Getter for the address's street
+     *
      * @return the address's suite
      */
     public String getStreet() { return this.street; }

@@ -24,6 +24,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Constructor for the API Property Assessment DAO Class
+     *
      * @param endPoint the end point from which to retrieve the property assessment data
      */
     public ApiPropertyAssessmentDAO(String endPoint){
@@ -32,6 +33,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets the index of a string within in an array of strings
+     *
      * @param stringArray The array of string being searched
      * @param str The string being searched for
      * @return The index of the string in the array, or -1 if the string wasn't found
@@ -45,6 +47,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Creates a formatted URL Query
+     *
      * @param urlQuery the query to be formatted
      * @return a formatted URL Query
      */
@@ -67,6 +70,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Sends a query and gets the data from the endpoint
+     *
      * @param query the query to be sent to the endpoint
      * @return The data returned from the endpoint
      */
@@ -90,6 +94,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a property assessment with the specified account number
+     *
      * @param accountNumber the account number of the property assessment
      * @return the property assessment with the specified account number or null if no property assessment was found
      */
@@ -108,6 +113,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Processes the CSV data retrieved form the end point into a list of property assessments
+     *
      * @param data The CSV data to be processed
      * @return A List of property assessments
      */
@@ -125,6 +131,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with a specified neighbourhood
+     *
      * @param neighbourhood The neighbourhood of the property assessments being searched for
      * @return A List of property assessments with the specified neighbourhood
      */
@@ -137,6 +144,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with a specified address
+     *
      * @param address The address if the property assessments being searched for
      * @return A list of property assessments with the specified address
      */
@@ -153,6 +161,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with a specified assessment class
+     *
      * @param assessmentClass The assessment class of the property assessments being search for
      * @return A list of property assessments with the specified assessment class
      */
@@ -165,6 +174,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets an unfiltered list of property assessments
+     *
      * @return A List of property assessments
      */
     @Override
@@ -176,6 +186,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Creates a query for an address
+     *
      * @param address the address to be queried
      * @return a query for an address or an empty string if the address is empty
      */
@@ -188,6 +199,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Creates a query for selecting property assessments with a specified neighbourhood
+     *
      * @param neighbourhood The neighbourhood to be queried
      * @return a query for a neighbourhood or an empty string is neighbourhood is empty
      */
@@ -200,6 +212,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Creates a query for selecting property assessments with a specified assessment class
+     *
      * @param assessmentClass The assessment class to be queried
      * @return a query for an assessment class or an empty string is neighbourhood is empty
      */
@@ -213,6 +226,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     /**
      * Creates a query to for selecting properties with an assessed value between a min and max. If either of the values
      * is less than 0 then that value will be ignored
+     *
      * @param min the minimum assessed value to be searched for
      * @param max the maximum assessed value to be searched for
      * @return A list of property assessments with assessed values between the min and max
@@ -239,6 +253,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Creates a query by combining all the appropriate queries as determined by the provided filter
+     *
      * @param filter A filter object that contains the fields to be filtered for
      * @return An amalgamated query for all the fields specified in the provided filter
      */
@@ -274,6 +289,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a filtered list of property values as defined by the provided filter
+     *
      * @param filter The filter that determines how the fields should be filtered
      * @return A filtered list of property assessments
      */
@@ -286,6 +302,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a Set of all the assessment classes in the property assessments
+     *
      * @return A set of assessment classes
      */
     @Override
@@ -305,6 +322,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with assessed values equal to or greater than min
+     *
      * @param min The minimum assessed value of property assessments to search for
      * @return A list of property assessments with assessed values greater than or equal to min
      */
@@ -317,6 +335,7 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     /**
      * Gets a list of property assessments with assessed values equal to or less than max
+     *
      * @param max The maximum assessed value of property assessments to search for
      * @return A list of property assessments with assessed values less than or equal to max
      */

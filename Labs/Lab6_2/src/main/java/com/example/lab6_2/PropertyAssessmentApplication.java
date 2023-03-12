@@ -94,6 +94,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Gets the property assessment from the data source with the specified account number
+     *
      * @return The property assessment with the specified account number or null if no such property assessment exists
      */
     private PropertyAssessment getPropertyByAccountNumber() {
@@ -110,6 +111,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Displays an alert with the specified message
+     *
      * @param message The message to be displayed in the alert
      */
     private void showNoDataAlert(String message) {
@@ -125,6 +127,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Gets the integer value in a text field
+     *
      * @param textField The text field whose value is being parsed into an int
      * @return the integer value of the text field or -1 of the value couldn't be parsed
      */
@@ -138,6 +141,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Gets a list of filtered property assessments
+     *
      * @return A list of property assessments
      */
     private List<PropertyAssessment> getFilteredList() {
@@ -177,6 +181,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Function called when the search button is pressed.
+     *
      * Populates the table with the filtered data from the data source
      */
     private void search() {
@@ -223,6 +228,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates the VBox that holds all the elements for selecting the data source
+     *
      * @return The VBox that holds all the data select elements
      */
     private VBox createDataSelectVBox() {
@@ -257,6 +263,7 @@ public class PropertyAssessmentApplication extends Application {
     /**
      * Creates the VBox that holds the text fields for getting the min and max
      * assessed value range
+     *
      * @return the VBox that contains the min and max value text fields
      */
     private VBox createAssessmentValueRangeVBox() {
@@ -302,6 +309,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates the VBox that holds the assessment class combo box
+     *
      * @return The VBox that contains the assessment class combo box
      */
     private VBox createAssessmentClassSelectVBox() {
@@ -312,6 +320,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates the HBox that holds the search and reset buttons
+     *
      * @return The HBox that holds the search and reset buttons
      */
     private HBox createButtonHBox () {
@@ -335,6 +344,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates the VBox that holds all the controls for filtering the property assessments
+     *
      * @return The VBox that holds all the controls for filtering the property assessments
      */
     private VBox createPropertyFindVBox() {
@@ -360,6 +370,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates the VBox that holds all the elements responsible for getting the input from the user
+     *
      * @return the VBox that holds all the elements responsible for getting the input from the user
      */
     private VBox createDataSelectionVBox() {
@@ -380,6 +391,7 @@ public class PropertyAssessmentApplication extends Application {
 
     /**
      * Creates and configures the components in the VBox that holds the table
+     *
      * @return the VBox that holds the table
      */
     private VBox createTableVBox() {

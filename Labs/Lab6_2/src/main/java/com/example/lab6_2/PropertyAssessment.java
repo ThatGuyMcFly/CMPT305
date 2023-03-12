@@ -26,6 +26,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Constructor for the Property Assessment Class
+     *
      * @param propertyData - Array of strings holding the property assessment's data in the following format:
      *          0          1         2              4         5            6               7          8          9           10         11           12                  13                  14                     15                   16                  17                  18
      * { Account Number, Suite, House Number, Street name, Garage, Neighbourhood ID, Neighbourhood, Ward, Assessed Value, Latitude, Longitude, Point Location, Assessment Class % 1, Assessment Class % 2, Assessment Class % 3, Assessment Class 1, Assessment Class 2, Assessment Class 3 }
@@ -45,6 +46,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Private function for extracting the assessment class data from the property data
+     *
      * @param propertyData - Array of strings holding the property assessment's data in the following format:
      *          0          1         2              4         5            6               7          8          9           10         11           12                  13                  14                     15                   16                  17                  18
      * { Account Number, Suite, House Number, Street name, Garage, Neighbourhood ID, Neighbourhood, Ward, Assessed Value, Latitude, Longitude, Point Location, Assessment Class % 1, Assessment Class % 2, Assessment Class % 3, Assessment Class 1, Assessment Class 2, Assessment Class 3 }
@@ -72,6 +74,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Private function for determining if the property has a garage
+     *
      * @param hasGarage - A string of either N or Y
      * @return boolean of whether the property has a garage
      */
@@ -81,6 +84,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property assessment's account number
+     *
      * @return the property's account number
      */
     public int getAccountNumber() {
@@ -89,6 +93,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's address
+     *
      * @return the property's address
      */
     public Address getAddress() {
@@ -97,6 +102,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for whether the property has a garage
+     *
      * @return whether the property has a garage
      */
     public boolean hasGarage() {
@@ -105,6 +111,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's neighbourhood ID
+     *
      * @return the property's neighbourhood ID
      */
     public String getNeighbourhoodId() {
@@ -113,6 +120,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's neighbourhood
+     *
      * @return the property's neighbourhood
      */
     public String getNeighbourhood() {
@@ -125,6 +133,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's ward
+     *
      * @return the property's ward
      */
     public String getWard() {
@@ -133,6 +142,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's assessed value
+     *
      * @return the property's assessed value
      */
     public int getAssessedValue() {
@@ -141,6 +151,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Getter for the property's location
+     *
      * @return the property's location
      */
     public Location getLocation() {
@@ -149,6 +160,7 @@ public class PropertyAssessment implements Comparable<PropertyAssessment>{
 
     /**
      * Override the compare method to compare the assessed value of 2 property assessments
+     *
      * @param otherPropertyAssessment the object to be compared.
      * @return the difference in the assessed value of two property assessments
      */
