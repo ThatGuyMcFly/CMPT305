@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="871907f6-0951-4af7-9cca-36a0291931e5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/HelloApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/milestone2/hello-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/src/main/resources/com/example/lab6_2/PropertyAssessment-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/AssessmentClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/AssessmentClass.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Filter$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Filter$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Filter.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Filter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2MvUjnMu4aRTcSZkKroVc9PW7p7" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="871907f6-0951-4af7-9cca-36a0291931e5" name="Changes" comment="" />
+      <created>1678647688174</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678647688174</updated>
+    </task>
+    <servers />
+  </component>
+</project>
