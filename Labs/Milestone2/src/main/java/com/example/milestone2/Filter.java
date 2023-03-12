@@ -1,4 +1,4 @@
-package com.example.lab6_2;
+package com.example.milestone2;
 
 public class Filter {
     private final String address;

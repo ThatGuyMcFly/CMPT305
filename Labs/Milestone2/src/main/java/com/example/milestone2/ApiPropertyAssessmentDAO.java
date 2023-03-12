@@ -172,16 +172,8 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return processData(response);
     }
 
-    /**
-     * Gets an unfiltered list of property assessments
-     *
-     * @return A List of property assessments
-     */
-    @Override
-    public List<PropertyAssessment> getPropertyAssessments() {
-        String response = getData("?$limit=1000&$offset=0&$order=account_number");
-
-        return processData(response);
+    private String createDefaultQuery() {
+        return "?$limit=1000&$offset=0&$order=account_number";
     }
 
     /**
@@ -258,27 +250,25 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
      * @return An amalgamated query for all the fields specified in the provided filter
      */
     private String createFilterQueryString(Filter filter) {
-        String queryStart = "?$where=";
-
-        StringBuilder query = new StringBuilder(queryStart);
+        StringBuilder query = new StringBuilder();
 
         query.append(createAddressQuery(filter.getAddress().toUpperCase()));
 
         // adds an AND between queries only if there are previous queries added and the filter field isn't the
         // default value of the filter field
-        if(query.length() > queryStart.length() && !filter.getNeighbourhood().isEmpty()) {
+        if(!query.isEmpty() && !filter.getNeighbourhood().isEmpty()) {
             query.append(" AND ");
         }
 
         query.append(createNeighbourhoodQuery(filter.getNeighbourhood()));
 
-        if(query.length() > queryStart.length() && !filter.getAssessmentClass().isEmpty()) {
+        if(!query.isEmpty() && !filter.getAssessmentClass().isEmpty()) {
             query.append(" AND ");
         }
 
         query.append(createAssessmentClassQuery(filter.getAssessmentClass()));
 
-        if(query.length() > queryStart.length() && (filter.getMinimumAssessedValue() > -1 || filter.getMaximumAssessedValue() > -1)) {
+        if(!query.isEmpty() && (filter.getMinimumAssessedValue() > -1 || filter.getMaximumAssessedValue() > -1)) {
             query.append(" AND ");
         }
 
@@ -295,7 +285,27 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
      */
     @Override
     public List<PropertyAssessment> getPropertyAssessments(Filter filter) {
-        String response = getData(createFilterQueryString(filter));
+        String query = createDefaultQuery();
+
+        String filterQuery = createFilterQueryString(filter);
+
+        if(!filterQuery.isEmpty()) {
+            query = "?$where=" + filterQuery;
+        }
+
+        String response = getData(query);
+
+        return processData(response);
+    }
+
+    /**
+     * Gets an unfiltered list of property assessments
+     *
+     * @return A List of property assessments
+     */
+    @Override
+    public List<PropertyAssessment> getPropertyAssessments() {
+        String response = getData(createDefaultQuery());
 
         return processData(response);
     }

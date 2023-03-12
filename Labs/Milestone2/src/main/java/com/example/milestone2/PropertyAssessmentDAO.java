@@ -1,4 +1,4 @@
-package com.example.lab6_2;
+package com.example.milestone2;
 
 import java.util.List;
 import java.util.Set;
