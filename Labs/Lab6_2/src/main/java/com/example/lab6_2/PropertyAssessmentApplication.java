@@ -18,10 +18,8 @@ import java.text.NumberFormat;
 import java.util.*;
 
 public class PropertyAssessmentApplication extends Application {
-
     private ObservableList<PropertyAssessment> propertyAssessments;
     private PropertyAssessmentDAO propertyAssessmentDAO;
-
     private final TextField accountNumberTextField = new TextField();
     private final TextField addressTextField = new TextField();
     private final TextField neighbourhoodTextField = new TextField();
@@ -41,12 +39,13 @@ public class PropertyAssessmentApplication extends Application {
         Scene scene = new Scene(mainHBox, 1500, 1000);
         primaryStage.setScene(scene);
 
-        VBox tableVBox =  configureTable();
+        VBox tableVBox =  createTableVBox();
         tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.80));
 
-        VBox selectionVBox = configureDataSelection();
+        VBox selectionVBox = createDataSelectionVBox();
         selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.20));
 
+        // Ensures the data select and property finder is always the same width
         scene.widthProperty().addListener(change -> {
 
             double selectionBoxMultiple = 300.0/scene.getWidth();
@@ -60,6 +59,10 @@ public class PropertyAssessmentApplication extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Function called when the read data button is pressed.
+     * Loads the initial data from the selected data source.
+     */
     private void loadData() {
         final Source CSV = Source.CSV;
         final Source API = Source.API;
@@ -89,6 +92,10 @@ public class PropertyAssessmentApplication extends Application {
         }
     }
 
+    /**
+     * Gets the property assessment from the data source with the specified account number
+     * @return The property assessment with the specified account number or null if no such property assessment exists
+     */
     private PropertyAssessment getPropertyByAccountNumber() {
         if (propertyAssessmentDAO != null) {
             try {
@@ -101,6 +108,10 @@ public class PropertyAssessmentApplication extends Application {
         return null;
     }
 
+    /**
+     * Displays an alert with the specified message
+     * @param message The message to be displayed in the alert
+     */
     private void showNoDataAlert(String message) {
         Alert noDataAlert = new Alert(Alert.AlertType.INFORMATION);
         noDataAlert.setTitle("Search Results");
@@ -112,6 +123,11 @@ public class PropertyAssessmentApplication extends Application {
         noDataAlert.showAndWait();
     }
 
+    /**
+     * Gets the integer value in a text field
+     * @param textField The text field whose value is being parsed into an int
+     * @return the integer value of the text field or -1 of the value couldn't be parsed
+     */
     private int getIntValue(TextField textField) {
         try{
             return Integer.parseInt(textField.getText());
@@ -120,6 +136,10 @@ public class PropertyAssessmentApplication extends Application {
         }
     }
 
+    /**
+     * Gets a list of filtered property assessments
+     * @return A list of property assessments
+     */
     private List<PropertyAssessment> getFilteredList() {
 
         String address = addressTextField.getText();
@@ -155,21 +175,29 @@ public class PropertyAssessmentApplication extends Application {
         return propertyAssessmentDAO.getPropertyAssessments(filter);
     }
 
+    /**
+     * Function called when the search button is pressed.
+     * Populates the table with the filtered data from the data source
+     */
     private void search() {
+        // Displays an alert if no data source has been selected
         if (propertyAssessmentDAO == null) {
             showNoDataAlert("No data source selected");
             return;
         }
 
         if(!accountNumberTextField.getText().isEmpty()) {
+            // If an account number if entered then will only find the property assessment
+            // with that account number and ignore other filters
             PropertyAssessment propertyAssessment = getPropertyByAccountNumber();
-            if (propertyAssessment != null) {
+            if (propertyAssessment == null) {
+                showNoDataAlert("Oops, did not find anything");
+            } else {
                 propertyAssessments.clear();
                 propertyAssessments.add(propertyAssessment);
-            } else {
-                showNoDataAlert("Oops, did not find anything");
             }
         } else {
+
             List<PropertyAssessment> filterdList = getFilteredList();
             if(filterdList.size() == 0) {
                 showNoDataAlert("Oops, did not find anything");
@@ -181,6 +209,9 @@ public class PropertyAssessmentApplication extends Application {
 
     }
 
+    /**
+     * Resets the fields in the search
+     */
     private void reset(){
         accountNumberTextField.setText("");
         addressTextField.setText("");
@@ -190,6 +221,10 @@ public class PropertyAssessmentApplication extends Application {
         maxValueTextField.setText("");
     }
 
+    /**
+     * Creates the VBox that holds all the elements for selecting the data source
+     * @return The VBox that holds all the data select elements
+     */
     private VBox createDataSelectVBox() {
         VBox dataSourceSelectVBox = new VBox(10);
 
@@ -219,6 +254,11 @@ public class PropertyAssessmentApplication extends Application {
         return dataSourceSelectVBox;
     }
 
+    /**
+     * Creates the VBox that holds the text fields for getting the min and max
+     * assessed value range
+     * @return the VBox that contains the min and max value text fields
+     */
     private VBox createAssessmentValueRangeVBox() {
         Label assessedValueRangeLabel = new Label("Assessed Value Range:");
 
@@ -260,12 +300,20 @@ public class PropertyAssessmentApplication extends Application {
         return vBox;
     }
 
+    /**
+     * Creates the VBox that holds the assessment class combo box
+     * @return The VBox that contains the assessment class combo box
+     */
     private VBox createAssessmentClassSelectVBox() {
         assessmentClasses = FXCollections.observableArrayList();
         assessmentClassSelect= new ComboBox<>(assessmentClasses);
         return createControlVBox("Assessment Class:", assessmentClassSelect);
     }
 
+    /**
+     * Creates the HBox that holds the search and reset buttons
+     * @return The HBox that holds the search and reset buttons
+     */
     private HBox createButtonHBox () {
         HBox buttonHBox = new HBox(10);
 
@@ -285,6 +333,10 @@ public class PropertyAssessmentApplication extends Application {
         return buttonHBox;
     }
 
+    /**
+     * Creates the VBox that holds all the controls for filtering the property assessments
+     * @return The VBox that holds all the controls for filtering the property assessments
+     */
     private VBox createPropertyFindVBox() {
         VBox propertyFindVBox = new VBox(10);
 
@@ -306,7 +358,11 @@ public class PropertyAssessmentApplication extends Application {
         return propertyFindVBox;
     }
 
-    private VBox configureDataSelection() {
+    /**
+     * Creates the VBox that holds all the elements responsible for getting the input from the user
+     * @return the VBox that holds all the elements responsible for getting the input from the user
+     */
+    private VBox createDataSelectionVBox() {
         VBox selectionVBox = new VBox(10);
 
         VBox dataSourceSelectVBox = createDataSelectVBox();
@@ -322,7 +378,11 @@ public class PropertyAssessmentApplication extends Application {
         return selectionVBox;
     }
 
-    private VBox configureTable() {
+    /**
+     * Creates and configures the components in the VBox that holds the table
+     * @return the VBox that holds the table
+     */
+    private VBox createTableVBox() {
         VBox tableVBox = new VBox(10);
         propertyAssessments = FXCollections.observableArrayList();
 

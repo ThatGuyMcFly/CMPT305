@@ -15,17 +15,20 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     private final String endPoint;
 
-    private int offset;
-
     public ApiPropertyAssessmentDAO(){
         this("https://data.edmonton.ca/resource/q7d6-ambg.csv");
     }
 
     public ApiPropertyAssessmentDAO(String endPoint){
         this.endPoint = endPoint;
-        this.offset = 1000;
     }
 
+    /**
+     * Gets the index of a string within in an array of strings
+     * @param stringArray The array of string being searched
+     * @param str The string being searched for
+     * @return The index of the string in the array, or -1 if the string wasn't found
+     */
     private int getIndex(String[] stringArray, String str) {
         return IntStream.range(0, stringArray.length)
                 .filter(i -> str.equals(stringArray[i]))
@@ -33,11 +36,17 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
                 .orElse(-1);
     }
 
+    /**
+     * Creates a formatted URL Query
+     * @param urlQuery the query to be formatted
+     * @return a formatted URL Query
+     */
     private String createUrl(String urlQuery) {
         String[] queryArray = urlQuery.split("&");
-        StringBuilder url = new StringBuilder(endPoint);// + URLEncoder.encode(queryParameters, StandardCharsets.UTF_8);
+        StringBuilder url = new StringBuilder(endPoint);
 
         for (String subQuery: queryArray) {
+            // avoids encoding '=' and '&' characters since that was causing issues when sending the queries
             int equalIndex = subQuery.indexOf('=');
             url.append(subQuery, 0, equalIndex + 1).append(URLEncoder.encode(subQuery.substring(equalIndex + 1), StandardCharsets.UTF_8));
 
@@ -49,6 +58,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return url.toString();
     }
 
+    /**
+     * Sends a query and gets the data from the endpoint
+     * @param query the query to be sent to the endpoint
+     * @return The data returned from the endpoint
+     */
     private String getData(String query) {
         String url = createUrl(query);
 
@@ -67,6 +81,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         }
     }
 
+    /**
+     * Gets a property assessment with the specified account number
+     * @param accountNumber the account number of the property assessment
+     * @return the property assessment with the specified account number or null if no property assessment was found
+     */
     @Override
     public PropertyAssessment getByAccountNumber(int accountNumber) {
         String response = getData("?account_number=" + accountNumber);
@@ -80,6 +99,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return null;
     }
 
+    /**
+     * Processes the CSV data retrieved form the end point into a list of property assessments
+     * @param data The CSV data to be processed
+     * @return A List of property assessments
+     */
     private List<PropertyAssessment> processData(String data) {
         List<PropertyAssessment> propertyAssessmentList = new ArrayList<>();
 
@@ -92,6 +116,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return propertyAssessmentList;
     }
 
+    /**
+     * Gets a list of property assessments with a specified neighbourhood
+     * @param neighbourhood The neighbourhood of the property assessments being searched for
+     * @return A List of property assessments with the specified neighbourhood
+     */
     @Override
     public List<PropertyAssessment> getByNeighbourhood(String neighbourhood) {
         String response = getData("?$where=" + createNeighbourhoodQuery(neighbourhood));
@@ -99,6 +128,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return processData(response);
     }
 
+    /**
+     * Gets a list of property assessments with a specified address
+     * @param address The address if the property assessments being searched for
+     * @return A list of property assessments with the specified address
+     */
     @Override
     public List<PropertyAssessment> getByAddress(String address) {
         if(address.isEmpty()) {
@@ -110,6 +144,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return processData(response);
     }
 
+    /**
+     * Gets a list of property assessments with a specified assessment class
+     * @param assessmentClass The assessment class of the property assessments being search for
+     * @return A list of property assessments with the specified assessment class
+     */
     @Override
     public List<PropertyAssessment> getByAssessmentClass(String assessmentClass) {
         String response = getData("?$where=" + createAssessmentClassQuery(assessmentClass));
@@ -117,13 +156,22 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return processData(response);
     }
 
+    /**
+     * Gets an unfiltered list of property assessments
+     * @return A List of property assessments
+     */
     @Override
     public List<PropertyAssessment> getPropertyAssessments() {
-        String response = getData("?$limit=1000&$offset=" + offset + "&$order=account_number");
+        String response = getData("?$limit=1000&$offset=0&$order=account_number");
 
         return processData(response);
     }
 
+    /**
+     * Creates a query for an address
+     * @param address the address to be queried
+     * @return a query for an address or an empty string if the address is empty
+     */
     private String createAddressQuery(String address) {
         if(address.isEmpty()) {
             return "";
@@ -131,6 +179,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return "suite || ' ' || house_number || ' ' || street_name like " + "'%" + address + "%'";
     }
 
+    /**
+     *
+     * @param neighbourhood
+     * @return
+     */
     private String createNeighbourhoodQuery(String neighbourhood) {
         if(neighbourhood.isEmpty()) {
             return "";
@@ -138,6 +191,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return "neighbourhood like " + "'%" + neighbourhood.toUpperCase() + "%'";
     }
 
+    /**
+     *
+     * @param assessmentClass
+     * @return
+     */
     private String createAssessmentClassQuery(String assessmentClass) {
         if (assessmentClass.isEmpty()) {
             return "";
@@ -145,6 +203,12 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return "(mill_class_1 = " + "'" + assessmentClass.toUpperCase() + "' OR mill_class_2 = '" + assessmentClass.toUpperCase() + "'" + " OR mill_class_3 = '" + assessmentClass.toUpperCase() + "')";
     }
 
+    /**
+     *
+     * @param min
+     * @param max
+     * @return
+     */
     private String createAssessedValueRangeQuery(int min, int max) {
         String minString = "";
         String maxString = "";
@@ -165,6 +229,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return "assessed_value " + minString + maxString;
     }
 
+    /**
+     *
+     * @param filter
+     * @return
+     */
     private String createFilterQueryString(Filter filter) {
         String queryStart = "?$where=";
 
@@ -193,6 +262,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return query.toString();
     }
 
+    /**
+     *
+     * @param filter
+     * @return
+     */
     @Override
     public List<PropertyAssessment> getPropertyAssessments(Filter filter) {
         String response = getData(createFilterQueryString(filter));
@@ -200,6 +274,10 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return processData(response);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Set<String> getAssessmentClasses() {
         Set<String> assessmentClassSet = new HashSet<>();
@@ -215,11 +293,21 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
         return assessmentClassSet;
     }
 
+    /**
+     *
+     * @param min
+     * @return
+     */
     @Override
     public List<PropertyAssessment> getByAssessedValueMinimum(int min) {
         return null;
     }
 
+    /**
+     *
+     * @param max
+     * @return
+     */
     @Override
     public List<PropertyAssessment> getByAssessedValueMaximum(int max) {
         return null;
