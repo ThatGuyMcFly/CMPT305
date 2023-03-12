@@ -12,21 +12,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class PropertyAssessmentApplication extends Application {
 
     private ObservableList<PropertyAssessment> propertyAssessments;
     private PropertyAssessmentDAO propertyAssessmentDAO;
 
-    private TextField accountNumberTextField = new TextField();
-    private TextField addressTextField = new TextField();
-    private TextField neighbourhoodTextField = new TextField();
+    private final TextField accountNumberTextField = new TextField();
+    private final TextField addressTextField = new TextField();
+    private final TextField neighbourhoodTextField = new TextField();
     private TextField minValueTextField = new TextField();
     private TextField maxValueTextField = new TextField();
     private ComboBox<String> sourceSelect;
@@ -40,16 +38,23 @@ public class PropertyAssessmentApplication extends Application {
         primaryStage.setTitle("Property Assessments");
         HBox mainHBox = new HBox(10);
         mainHBox.setPadding(new Insets(10, 10, 10, 10));
-        Scene scene = new Scene(mainHBox, 1000, 1000);
+        Scene scene = new Scene(mainHBox, 1500, 1000);
         primaryStage.setScene(scene);
 
-        primaryStage.setMaximized(true);
-
         VBox tableVBox =  configureTable();
-        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.88));
+        tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.80));
 
         VBox selectionVBox = configureDataSelection();
-        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.12));
+        selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(0.20));
+
+        scene.widthProperty().addListener(change -> {
+
+            double selectionBoxMultiple = 300.0/scene.getWidth();
+            double tableMultiple = 1.0 - selectionBoxMultiple;
+
+            tableVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(tableMultiple));
+            selectionVBox.prefWidthProperty().bind(mainHBox.widthProperty().multiply(selectionBoxMultiple));
+        });
 
         mainHBox.getChildren().addAll(selectionVBox, tableVBox);
         primaryStage.show();
@@ -71,10 +76,13 @@ public class PropertyAssessmentApplication extends Application {
             propertyAssessmentDAO = new ApiPropertyAssessmentDAO();
         }
 
-        propertyAssessmentList = propertyAssessmentDAO.getAssessments();
+        propertyAssessmentList = propertyAssessmentDAO.getPropertyAssessments();
         assessmentClassSet = propertyAssessmentDAO.getAssessmentClasses();
         assessmentClassSet.add("");
+
         assessmentClasses.addAll(assessmentClassSet);
+
+        assessmentClassSelect.setValue("");
 
         if (propertyAssessmentList.size() > 0) {
             propertyAssessments.addAll(propertyAssessmentList);
@@ -82,78 +90,15 @@ public class PropertyAssessmentApplication extends Application {
     }
 
     private PropertyAssessment getPropertyByAccountNumber() {
-        String accountNumber = accountNumberTextField.getText();
         if (propertyAssessmentDAO != null) {
             try {
-                return propertyAssessmentDAO.getByAccountNumber(Integer.parseInt(accountNumber));
+                return propertyAssessmentDAO.getByAccountNumber(Integer.parseInt(accountNumberTextField.getText()));
             } catch (NumberFormatException error) {
                 return null;
             }
         }
 
         return null;
-    }
-
-    private List<PropertyAssessment> getPropertyAssessmentsByAddress() {
-        String address = addressTextField.getText();
-
-        if (address.isEmpty()) {
-            return null;
-        }
-
-        return propertyAssessmentDAO.getByAddress(address);
-    }
-
-    private List<PropertyAssessment> getPropertyAssessmentByNeighbourhood() {
-        String neighbourhood = neighbourhoodTextField.getText();
-
-        if (neighbourhood.isEmpty()) {
-            return null;
-        }
-
-        return propertyAssessmentDAO.getByNeighbourhood(neighbourhood);
-    }
-
-    private List<PropertyAssessment> getPropertyAssessmentByAssessmentClass() {
-        String assessmentClass = assessmentClassSelect.getValue();
-
-        if(assessmentClass == null || assessmentClass.isEmpty()) {
-            return null;
-        }
-
-        return propertyAssessmentDAO.getByAssessmentClass(assessmentClass);
-    }
-
-    private List<PropertyAssessment> getPropertyAssessmentByAssessedValueMin(){
-        String minimum = minValueTextField.getText();
-
-        if(minimum.isEmpty()) {
-            return null;
-        }
-
-        try {
-            int minimumValue = Integer.parseInt(minimum);
-
-            return propertyAssessmentDAO.getByAssessedValueMinimum(minimumValue);
-        } catch (NumberFormatException error) {
-            return null;
-        }
-    }
-
-    private List<PropertyAssessment> getPropertyAssessmentByAssessedValueMax(){
-        String maximum = maxValueTextField.getText();
-
-        if(maximum.isEmpty()) {
-            return null;
-        }
-
-        try {
-            int maximumValue = Integer.parseInt(maximum);
-
-            return propertyAssessmentDAO.getByAssessedValueMaximum(maximumValue);
-        } catch (NumberFormatException error) {
-            return null;
-        }
     }
 
     private void showNoDataAlert(String message) {
@@ -167,32 +112,47 @@ public class PropertyAssessmentApplication extends Application {
         noDataAlert.showAndWait();
     }
 
+    private int getIntValue(TextField textField) {
+        try{
+            return Integer.parseInt(textField.getText());
+        } catch (NumberFormatException error) {
+            return -1;
+        }
+    }
+
     private List<PropertyAssessment> getFilteredList() {
-        List<PropertyAssessment> addressList = getPropertyAssessmentsByAddress();
-        List<PropertyAssessment> neighbouthoodList = getPropertyAssessmentByNeighbourhood();
-        List<PropertyAssessment> assessmentClassList = getPropertyAssessmentByAssessmentClass();
-        List<PropertyAssessment> assessedValueMinList = getPropertyAssessmentByAssessedValueMin();
-        List<PropertyAssessment> assessedValueMaxList = getPropertyAssessmentByAssessedValueMax();
 
-        List<List<PropertyAssessment>> nonNullLists = Stream
-                .of(addressList, neighbouthoodList, assessmentClassList, assessedValueMinList, assessedValueMaxList)
-                .filter(Objects::nonNull)
-                .toList();
+        String address = addressTextField.getText();
+        String neighbourhood = neighbourhoodTextField.getText();
+        String assessmentClass = assessmentClassSelect.getValue();
+        int minimumAssessedValue = getIntValue(minValueTextField);
+        int maximumAssessedValue = getIntValue(maxValueTextField);
 
-        List<PropertyAssessment> filteredList;
+        Filter.Builder builder = new Filter.Builder();
 
-        if(nonNullLists.size() > 0){
-            filteredList = nonNullLists.get(0);
-
-            for(int i = 1; i < nonNullLists.size(); i++) {
-                filteredList.retainAll(nonNullLists.get(i));
-            }
-        } else {
-            filteredList = propertyAssessmentDAO.getAssessments();
+        if(!address.isEmpty()) {
+            builder.address(address);
         }
 
+        if(!neighbourhood.isEmpty()) {
+            builder.neighbourhood(neighbourhood);
+        }
 
-        return filteredList;
+        if(!assessmentClass.isEmpty()) {
+            builder.assessmentClass(assessmentClass);
+        }
+
+        if(minimumAssessedValue >= 0) {
+            builder.minimumAssessedValue(minimumAssessedValue);
+        }
+
+        if(maximumAssessedValue >= 0) {
+            builder.maximumAssessedValue(maximumAssessedValue);
+        }
+
+        Filter filter = builder.build();
+
+        return propertyAssessmentDAO.getPropertyAssessments(filter);
     }
 
     private void search() {
@@ -269,6 +229,9 @@ public class PropertyAssessmentApplication extends Application {
         maxValueTextField.setPromptText("Max Value");
 
         HBox minMaxHBox = new HBox(10);
+
+        minValueTextField.prefWidthProperty().bind(minMaxHBox.widthProperty().multiply(0.5));
+        maxValueTextField.prefWidthProperty().bind(minMaxHBox.widthProperty().multiply(0.5));
 
         minMaxHBox.getChildren().addAll(minValueTextField, maxValueTextField);
 
@@ -368,7 +331,7 @@ public class PropertyAssessmentApplication extends Application {
 
         TableColumn<PropertyAssessment, String> accountCol = new TableColumn<>("Account");
         accountCol.setCellValueFactory(new PropertyValueFactory<>("accountNumber"));
-        accountCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        accountCol.prefWidthProperty().bind(table.widthProperty().multiply(0.07));
         table.getColumns().add(accountCol);
 
         TableColumn<PropertyAssessment, Address> addressCol = new TableColumn<>("Address");
@@ -415,7 +378,7 @@ public class PropertyAssessmentApplication extends Application {
             }
         });
 
-        assessedValueCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        assessedValueCol.prefWidthProperty().bind(table.widthProperty().multiply(0.14));
         table.getColumns().add(assessedValueCol);
 
         TableColumn<PropertyAssessment, List<AssessmentClass>> assessmentClassCol = new TableColumn<>("Assessment Class");
@@ -443,13 +406,13 @@ public class PropertyAssessmentApplication extends Application {
                 }
             }
         });
-        assessmentClassCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        assessmentClassCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         table.getColumns().add(assessmentClassCol);
 
         TableColumn<PropertyAssessment, String> neighbourhoodCol = new TableColumn<>("Neighbourhood");
         neighbourhoodCol.setCellValueFactory(new PropertyValueFactory<>("neighbourhood"));
         table.getColumns().add(neighbourhoodCol);
-        neighbourhoodCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        neighbourhoodCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
 
         TableColumn<PropertyAssessment, Location> locationCol = new TableColumn<>("(Latitude, Longitude)");
         locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
@@ -460,7 +423,7 @@ public class PropertyAssessmentApplication extends Application {
                 setText(empty ? "": "(" + location.getLatitude() + ", " + location.getLongitude() + ")");
             }
         });
-        locationCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
+        locationCol.prefWidthProperty().bind(table.widthProperty().multiply(0.20));
         table.getColumns().add(locationCol);
 
         Label tableLabel = new Label("Edmonton Property Assessments (2022)");

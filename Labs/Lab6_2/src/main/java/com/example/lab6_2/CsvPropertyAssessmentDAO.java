@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
@@ -166,10 +167,57 @@ public class CsvPropertyAssessmentDAO implements PropertyAssessmentDAO{
      * @return
      */
     @Override
-    public List<PropertyAssessment> getAssessments() {
+    public List<PropertyAssessment> getPropertyAssessments() {
         return new ArrayList<>(propertyAssessments);
     }
 
+    @Override
+    public List<PropertyAssessment> getPropertyAssessments(Filter filter) {
+        List<PropertyAssessment> addressList = null;
+        if(!filter.getAddress().isEmpty()){
+            addressList = getByAddress(filter.getAddress());
+        }
+
+        List<PropertyAssessment> neighbourhoodList = null;
+        if(!filter.getNeighbourhood().isEmpty()) {
+            neighbourhoodList = getByNeighbourhood(filter.getNeighbourhood());
+        }
+
+        List<PropertyAssessment> assessmentClassList = null;
+        if(!filter.getAssessmentClass().isEmpty()) {
+            assessmentClassList = getByAssessmentClass(filter.getAssessmentClass());
+        }
+
+        List<PropertyAssessment> minimumAssessedValueList = null;
+        if (filter.getMinimumAssessedValue() >= 0) {
+            minimumAssessedValueList = getByAssessedValueMinimum(filter.getMinimumAssessedValue());
+        }
+
+
+        List<PropertyAssessment> maxmimumAssessedValueList = null;
+        if(filter.getMaximumAssessedValue() >= 0) {
+            maxmimumAssessedValueList = getByAssessedValueMaximum(filter.getMaximumAssessedValue());
+        }
+
+        List<List<PropertyAssessment>> nonNullLists = Stream
+                .of(addressList, neighbourhoodList, assessmentClassList, minimumAssessedValueList, maxmimumAssessedValueList)
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<PropertyAssessment> filteredList;
+
+        if(nonNullLists.size() > 0){
+            filteredList = nonNullLists.get(0);
+
+            for(int i = 1; i < nonNullLists.size(); i++) {
+                filteredList.retainAll(nonNullLists.get(i));
+            }
+        } else {
+            filteredList = new ArrayList<>(propertyAssessments);
+        }
+
+        return filteredList;
+    }
 
 
     @Override

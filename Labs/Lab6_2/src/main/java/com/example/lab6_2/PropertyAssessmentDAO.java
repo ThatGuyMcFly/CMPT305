@@ -8,7 +8,8 @@ public interface PropertyAssessmentDAO {
     List<PropertyAssessment> getByNeighbourhood(String neighbourhood);
     List<PropertyAssessment> getByAddress(String address);
     List<PropertyAssessment> getByAssessmentClass(String assessmentClass);
-    List<PropertyAssessment> getAssessments();
+    List<PropertyAssessment> getPropertyAssessments();
+    List<PropertyAssessment> getPropertyAssessments(Filter filter);
     Set<String> getAssessmentClasses();
     List<PropertyAssessment> getByAssessedValueMinimum(int min);
     List<PropertyAssessment> getByAssessedValueMaximum(int max);
