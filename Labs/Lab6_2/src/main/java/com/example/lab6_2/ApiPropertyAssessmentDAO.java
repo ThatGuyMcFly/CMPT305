@@ -15,10 +15,17 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
     private final String endPoint;
 
+    /**
+     * Default constructor for the API Property Assessment DAO Class
+     */
     public ApiPropertyAssessmentDAO(){
         this("https://data.edmonton.ca/resource/q7d6-ambg.csv");
     }
 
+    /**
+     * Constructor for the API Property Assessment DAO Class
+     * @param endPoint the end point from which to retrieve the property assessment data
+     */
     public ApiPropertyAssessmentDAO(String endPoint){
         this.endPoint = endPoint;
     }
@@ -180,9 +187,9 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param neighbourhood
-     * @return
+     * Creates a query for selecting property assessments with a specified neighbourhood
+     * @param neighbourhood The neighbourhood to be queried
+     * @return a query for a neighbourhood or an empty string is neighbourhood is empty
      */
     private String createNeighbourhoodQuery(String neighbourhood) {
         if(neighbourhood.isEmpty()) {
@@ -192,9 +199,9 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param assessmentClass
-     * @return
+     * Creates a query for selecting property assessments with a specified assessment class
+     * @param assessmentClass The assessment class to be queried
+     * @return a query for an assessment class or an empty string is neighbourhood is empty
      */
     private String createAssessmentClassQuery(String assessmentClass) {
         if (assessmentClass.isEmpty()) {
@@ -204,10 +211,11 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param min
-     * @param max
-     * @return
+     * Creates a query to for selecting properties with an assessed value between a min and max. If either of the values
+     * is less than 0 then that value will be ignored
+     * @param min the minimum assessed value to be searched for
+     * @param max the maximum assessed value to be searched for
+     * @return A list of property assessments with assessed values between the min and max
      */
     private String createAssessedValueRangeQuery(int min, int max) {
         String minString = "";
@@ -230,9 +238,9 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param filter
-     * @return
+     * Creates a query by combining all the appropriate queries as determined by the provided filter
+     * @param filter A filter object that contains the fields to be filtered for
+     * @return An amalgamated query for all the fields specified in the provided filter
      */
     private String createFilterQueryString(Filter filter) {
         String queryStart = "?$where=";
@@ -241,6 +249,8 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
 
         query.append(createAddressQuery(filter.getAddress().toUpperCase()));
 
+        // adds an AND between queries only if there are previous queries added and the filter field isn't the
+        // default value of the filter field
         if(query.length() > queryStart.length() && !filter.getNeighbourhood().isEmpty()) {
             query.append(" AND ");
         }
@@ -263,9 +273,9 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param filter
-     * @return
+     * Gets a filtered list of property values as defined by the provided filter
+     * @param filter The filter that determines how the fields should be filtered
+     * @return A filtered list of property assessments
      */
     @Override
     public List<PropertyAssessment> getPropertyAssessments(Filter filter) {
@@ -275,8 +285,8 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @return
+     * Gets a Set of all the assessment classes in the property assessments
+     * @return A set of assessment classes
      */
     @Override
     public Set<String> getAssessmentClasses() {
@@ -294,22 +304,26 @@ public class ApiPropertyAssessmentDAO implements PropertyAssessmentDAO{
     }
 
     /**
-     *
-     * @param min
-     * @return
+     * Gets a list of property assessments with assessed values equal to or greater than min
+     * @param min The minimum assessed value of property assessments to search for
+     * @return A list of property assessments with assessed values greater than or equal to min
      */
     @Override
     public List<PropertyAssessment> getByAssessedValueMinimum(int min) {
-        return null;
+        String response = getData(createAssessedValueRangeQuery(min, -1));
+
+        return processData(response);
     }
 
     /**
-     *
-     * @param max
-     * @return
+     * Gets a list of property assessments with assessed values equal to or less than max
+     * @param max The maximum assessed value of property assessments to search for
+     * @return A list of property assessments with assessed values less than or equal to max
      */
     @Override
     public List<PropertyAssessment> getByAssessedValueMaximum(int max) {
-        return null;
+        String response = getData(createAssessedValueRangeQuery(0, max));
+
+        return processData(response);
     }
 }
