@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class WordMap {
     // a map of word to its neighbours
-    private Map<String, List<String>> neighbours;
+    private final Map<String, List<String>> neighbours;
 
     private List<String> getStringList(String filename) {
         List<String> stringList = new ArrayList<>();
@@ -131,6 +131,8 @@ public class WordMap {
         checkedList.add(start);
 
         int dist = 1;
+
+        // Put the distance in the queue to track when the current level being checked has ended
         checkingQueue.add(Integer.toString(dist));
 
         while (!checkingQueue.isEmpty()) {
@@ -138,14 +140,20 @@ public class WordMap {
             String currentString = checkingQueue.remove();
 
             if(currentString.equals(end)) {
+                // Return the distance when the end string has been found
                 return dist;
-            } else if (currentString.equals(Integer.toString(dist))) {
+            } else if (currentString.equals(Integer.toString(dist)) && !checkingQueue.isEmpty()) {
+                // increment the distance when all words in the current level have been checked
                 dist++;
+                // Insert the new level into the queue to track current level
                 checkingQueue.add(Integer.toString(dist));
-            } else {
+            } else if (!checkingQueue.isEmpty()) {
+                // put current string into the checked list to avoid checking the same word twice
                 checkedList.add(currentString);
                 for (String neighbourString: neighbours.get(currentString)){
-                    if(checkedList.indexOf(neighbourString) == -1) {
+                    // check if neighbour string is has already been checked
+                    if(!checkedList.contains(neighbourString)) {
+                        // only add strings to the checking queue if it hasn't yet been checked
                         checkingQueue.add(neighbourString);
                     }
                 }
@@ -182,7 +190,11 @@ public class WordMap {
 
         System.out.println(wordMap.distance("mat", "mat"));
         System.out.println(wordMap.distance("dog", "dot"));
-        System.out.println();
+        System.out.println(wordMap.distance("rut", "cat"));
+        System.out.println(wordMap.distance("cot", "rut"));
+        System.out.println(wordMap.distance("dog", "rat"));
+        System.out.println(wordMap.distance("dog", "man"));
+        System.out.println(wordMap.distance("dog", "bob"));
 
         System.out.println("Done");
     }
