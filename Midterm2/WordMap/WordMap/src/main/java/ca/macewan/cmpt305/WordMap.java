@@ -17,23 +17,19 @@ public class WordMap {
     // a map of word to its neighbours
     private final Map<String, List<String>> neighbours;
 
-    private List<String> getStringList(String filename) {
-        List<String> stringList = new ArrayList<>();
-
+    private void initializeNeighbours(String filename) {
         File file = new File(filename);
         Scanner scanner;
         try {
             scanner = new Scanner(file);
         } catch (FileNotFoundException e){
             System.out.println("No file " + filename + " found");
-            return stringList;
+            return;
         }
 
         while(scanner.hasNextLine()) {
-            stringList.add(scanner.nextLine());
+            neighbours.put(scanner.nextLine(), new ArrayList<>());
         }
-
-        return stringList;
     }
 
     /**
@@ -47,18 +43,17 @@ public class WordMap {
     public WordMap(String filename) {
         neighbours = new HashMap<>();
 
-        List<String> stringList = getStringList(filename);
 
-        for (String string1: stringList) {
+        initializeNeighbours(filename);
+
+        for (String string1: neighbours.keySet()) {
             List<String> neighbourStrings = new ArrayList<>();
 
-            for (String string2: stringList) {
+            for (String string2: neighbours.keySet()) {
                 if(isNeighbour(string1, string2)) {
-                    neighbourStrings.add(string2);
+                    neighbours.get(string1).add(string2);
                 }
             }
-
-            neighbours.put(string1, neighbourStrings);
         }
     }
 
@@ -83,7 +78,7 @@ public class WordMap {
      * @return true if word1 and word2 are neighbours; false, otherwise.
      */
     public boolean isNeighbour(String word1, String word2) {
-        if (word1.length() != word2.length() || word1.equals(word2)) {
+        if (word1.length() != word2.length() || word1.equals(word2) || !neighbours.containsKey(word1) || !neighbours.containsKey(word2)) {
             return false;
         }
 
@@ -163,6 +158,28 @@ public class WordMap {
         return -1;
     }
 
+    private List<String> assemblePathList(Stack<Map<String, String>> mapStack, String start, String end){
+        Deque<String> pathStack = new ArrayDeque<>();
+        pathStack.add(end);
+
+        String currentString = end;
+
+        while(!mapStack.isEmpty()) {
+            Map<String, String> stringMap = mapStack.pop();
+            if(stringMap.containsKey(currentString)) {
+                currentString = stringMap.get(currentString);
+                pathStack.push(currentString);
+
+                if(currentString.equals(start)){
+                    break;
+                }
+            }
+        }
+
+
+        return new ArrayList<>(pathStack);
+    }
+
     /**
      * Return the path, if exists, between start and end (15 points).
      * You can find a possible path by keeping track of the transformation from start to end words by
@@ -177,7 +194,75 @@ public class WordMap {
      *          or any of the given words don't exist in the neighbours map).
      */
     public List<String> path(String start, String end) {
-        return new ArrayList<>(); // replace with your implementation
+        if(neighbours.get(start) == null || neighbours.get(end) == null || start.length() != end.length()) {
+            // return an empty list if either the end or start don't exist in the neighbours map or if the strings
+            // are not the same length
+            return new ArrayList<>();
+        }
+
+        List<String> pathList = new ArrayList<>();
+
+        if(start.equals(end)) {
+            // If start and end are the same, return a list of just the start string
+            pathList.add(start);
+            return pathList;
+        }
+
+        if(isNeighbour(start, end)) {
+            // If start and end are neighbours, return the two element list
+            pathList.add(start);
+            pathList.add(end);
+            return pathList;
+        }
+
+        // stack used to construct the path list when a path is found
+        Stack<Map<String, String>> checkedStack = new Stack<>();
+
+        // queue used to queue up neighbour strings to be checked
+        Queue<Map<String, String>> checkingQueue = new ArrayDeque<>();
+
+        // add the neighbours of the start word to initialize the checking queue
+        for(String neighbourString: neighbours.get(start)) {
+            Map<String, String> neighbourMap = new HashMap<>();
+            neighbourMap.put(neighbourString, start);
+            checkingQueue.add(neighbourMap);
+        }
+
+        // Iterate over the checking queue
+        while(!checkingQueue.isEmpty()) {
+            Map<String, String> neighbourMap;
+            neighbourMap = checkingQueue.remove();
+            // get the key of the current neighbour map to be checked
+            String checkString = (String) neighbourMap.keySet().toArray()[0];
+
+            // Add current map being checked to the stack of checked maps
+            checkedStack.add(neighbourMap);
+
+            // iterate over the current string's neighbours
+            for (String neighbour: neighbours.get(checkString)) {
+                // Check if the neighbouring string is the previous neighbour of the current string
+                if(!neighbour.equals(neighbourMap.get(checkString))) {
+                    // if not previous neighbour, create new neighbour map mapping the neighbour
+                    // string to current string
+                    Map<String, String> newNeighbourMap = new HashMap<>();
+                    newNeighbourMap.put(neighbour, checkString);
+
+                    // Check if neighbour string is the end string
+                    if(neighbour.equals(end)) {
+                        // If the end string, add to checked stack
+                        checkedStack.add(newNeighbourMap);
+                        // assemble and return the path list
+                        return assemblePathList(checkedStack, start, end);
+                    }
+
+                    // Add the neighbourMap to be checking queue for checking later
+                    checkingQueue.add(newNeighbourMap);
+                }
+            }
+        }
+
+        // If no path was found then return an empty list
+        return new ArrayList<>();
     }
 
     public static void main(String[] args) {
@@ -187,14 +272,6 @@ public class WordMap {
         System.out.println("Additional test cases may be used to test your solution");
 
         WordMap wordMap = new WordMap("test.txt");
-
-        System.out.println(wordMap.distance("mat", "mat"));
-        System.out.println(wordMap.distance("dog", "dot"));
-        System.out.println(wordMap.distance("rut", "cat"));
-        System.out.println(wordMap.distance("cot", "rut"));
-        System.out.println(wordMap.distance("dog", "rat"));
-        System.out.println(wordMap.distance("dog", "man"));
-        System.out.println(wordMap.distance("dog", "bob"));
 
         System.out.println("Done");
     }
