@@ -47,7 +47,6 @@ public class WordMap {
         initializeNeighbours(filename);
 
         for (String string1: neighbours.keySet()) {
-            List<String> neighbourStrings = new ArrayList<>();
 
             for (String string2: neighbours.keySet()) {
                 if(isNeighbour(string1, string2)) {
