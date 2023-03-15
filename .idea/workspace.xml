@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fc7df346-f9ad-43e6-9e81-af010ed7ba4c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/AssessmentClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/AssessmentClass.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Filter$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Filter$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Filter.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Filter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labs/Milestone2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Labs/Milestone2/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2N3xjkOJAfic605dDAWiMDMmVJ1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/martin/Documents/School/Winter_2023/CMPT305/Midterm2/WordMap/WordMap"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fc7df346-f9ad-43e6-9e81-af010ed7ba4c" name="Changes" comment="" />
+      <created>1678906704037</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678906704037</updated>
+    </task>
+    <servers />
+  </component>
+</project>

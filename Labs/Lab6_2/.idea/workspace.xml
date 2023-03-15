@@ -6,7 +6,20 @@
   <component name="ChangeListManager">
     <list default="true" id="bc590b55-f51c-4801-bfb9-25ce85299e09" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/ApiPropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/lab6_2/ApiPropertyAssessmentDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Address.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Address.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/ApiPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/AssessmentClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/AssessmentClass.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/CsvPropertyAssessmentDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Filter$Builder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Filter$Builder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Filter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Filter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Location.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/Location.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessment-view.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessment.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessment.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

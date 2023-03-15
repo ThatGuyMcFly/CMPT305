@@ -20,16 +20,7 @@
       <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$3.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication$4.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Lab6_2/target/classes/com/example/lab6_2/PropertyAssessmentApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Address.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/ApiPropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/ApiPropertyAssessmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/AssessmentClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/AssessmentClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/CsvPropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/CsvPropertyAssessmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Filter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Filter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/PropertyAssessment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/PropertyAssessment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/PropertyAssessmentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/PropertyAssessmentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Source.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/milestone2/Source.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +50,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/home/martin/Documents/School/Winter_2023/CMPT305/Labs/Milestone2",
+    "last_opened_file_path": "/home/martin/Documents/School/Winter_2023/CMPT305",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
