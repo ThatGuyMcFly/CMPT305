@@ -33,6 +33,20 @@ public class WordMap {
     }
 
     /**
+     * Populates the list of neighbours for a particular string in the neighbours map key set using the key set of
+     * neighbours
+     *
+     * @param string the key in neighbours whose neighbour list is to be populated
+     */
+    private void populateNeighbours(String string) {
+        for (String string2: neighbours.keySet()) {
+            if(isNeighbour(string, string2)) {
+                neighbours.get(string).add(string2);
+            }
+        }
+    }
+
+    /**
      * Construct a WordMap object and populate the map of a word to its neighbours (40 points).
      * From the given file, compute a map from every word to its immediate neighbours.
      * Use the isNeighbour method to determine if two words have an edit distance of one.
@@ -43,17 +57,11 @@ public class WordMap {
     public WordMap(String filename) {
         neighbours = new HashMap<>();
 
-
         initializeNeighbours(filename);
 
-        for (String string1: neighbours.keySet()) {
-
-            for (String string2: neighbours.keySet()) {
-                if(isNeighbour(string1, string2)) {
-                    neighbours.get(string1).add(string2);
-                }
-            }
-        }
+        neighbours.keySet()
+                .parallelStream()
+                .forEach(this::populateNeighbours);
     }
 
     /**
@@ -157,25 +165,43 @@ public class WordMap {
         return -1;
     }
 
+    /**
+     * Extracts and assembles the path from the start string to end string
+     *
+     * @param mapStack stack that holds the word pairs that map from the start to end string
+     * @param start the start string
+     * @param end the end string
+     * @return the list of the words that map the start string to the end string
+     */
     private List<String> assemblePathList(Stack<Map<String, String>> mapStack, String start, String end){
         Deque<String> pathStack = new ArrayDeque<>();
         pathStack.add(end);
 
+        // Start at end string
         String currentString = end;
 
+        // While loop maps the path from the end to start
+        // pushing the previous neighbour onto the stack.
         while(!mapStack.isEmpty()) {
+            // take the top word pair off the stack
             Map<String, String> stringMap = mapStack.pop();
+
+            // Check if word pair contains current string
             if(stringMap.containsKey(currentString)) {
+                // replace current string with the previous neighbour of the word pair
                 currentString = stringMap.get(currentString);
+
+                // push new current string onto the stack
                 pathStack.push(currentString);
 
+                // Check if new current string is the start string
                 if(currentString.equals(start)){
                     break;
                 }
             }
         }
 
-
+        // Return the path stack as a list
         return new ArrayList<>(pathStack);
     }
 
@@ -269,8 +295,6 @@ public class WordMap {
         System.out.println("Please complete the implementation of each method and review the examples of test cases\\" +
                 " carefully");
         System.out.println("Additional test cases may be used to test your solution");
-
-        WordMap wordMap = new WordMap("test.txt");
 
         System.out.println("Done");
     }
